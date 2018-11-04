@@ -7,7 +7,7 @@ Please read ```RULES.md``` as well
 
 ## Support
 
-- 8.4.1 & 9.3 up to 9.3.3 & 11.3.1 (64-bit)
+- 8.4.1 & 9.3 up to 9.3.3 & 11.3.1 & 12.0 - 12.0.1 (64-bit)
 - 3.1.2 up to 4.0.1 & 8.4.1 and 9.1 up to 9.3.4 (32-bit)
 
 Read more: https://github.com/MTJailed/jailbreakme/blob/master/SUPPORT.md
@@ -43,6 +43,7 @@ These modules can be divided into the following stages:
 - Various tools and capabilities could be setup after successful completion of the exploit, such as a telnet client to gain a shell on the victim from the browser.
 
 ## Credits
+- @kudima
 - 5aelo
 - Niklas B
 - Tihmstar
