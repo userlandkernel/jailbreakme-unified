@@ -1,5 +1,6 @@
 # The Mach-O File format
 _This document contains information taken from https://github.com/kpwn/iOSRE/edit/master/wiki/Mach-O.md_  
+
 A file format is a standard for how a file is structured.  
 The Mach-O (MACH/MUCK Object) is a well-structured fileformat, the executable format of choice for XNU and dyld.  
 It serves a purpose analog to what ELF or PE do; to put it simply, it describes a portion of an address space.  
