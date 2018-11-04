@@ -43,17 +43,18 @@ These modules can be divided into the following stages:
 - Various tools and capabilities could be setup after successful completion of the exploit, such as a telnet client to gain a shell on the victim from the browser.
 
 ## Credits
-- (kudima) https://github.com/kudima
-- 5aelo
-- Niklas B
-- Tihmstar
-- Luca Todesco
-- KJC Research
-- Comex
-- PanguTeam
-- Ian Beer
-- Argp
-- Evad3rs
+- kudima https://github.com/kudima
+- 5aelo https://twitter.com/5aelo
+- Niklas B https://twitter.com/_niklasb
+- Tihmstar https://twitter.com/tihmstar
+- Coolstar https://twitter.com/coolstarorg
+- Luca Todesco https://twitter.com/qwertyoruiopz
+- KJC Research 
+- Comex 
+- PanguTeam https://twitter.com/panguteam
+- Ian Beer https://twitter.com/i4nbeer
+- Argp https://twitter.com/_argp
+- Evad3rs 
 - Jonathan Levin (For the jailbreak toolkit)
 - Lokihardt (For being able to pwn browsers within a wink)
 - Sem Voigtländer (just a techie)
