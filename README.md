@@ -7,7 +7,7 @@ Please read ```RULES.md``` as well
 
 ## Support
 
-- 8.4.1 & 9.3 up to 9.3.3 & 11.3.1 (64-bit)
+- 8.4.1 & 9.3 up to 9.3.3 & 11.3.1 & 12.0 - 12.0.1 (64-bit)
 - 3.1.2 up to 4.0.1 & 8.4.1 and 9.1 up to 9.3.4 (32-bit)
 
 Read more: https://github.com/MTJailed/jailbreakme/blob/master/SUPPORT.md
@@ -43,16 +43,18 @@ These modules can be divided into the following stages:
 - Various tools and capabilities could be setup after successful completion of the exploit, such as a telnet client to gain a shell on the victim from the browser.
 
 ## Credits
-- 5aelo
-- Niklas B
-- Tihmstar
-- Luca Todesco
-- KJC Research
-- Comex
-- PanguTeam
-- Ian Beer
-- Argp
-- Evad3rs
+- kudima https://github.com/kudima
+- 5aelo https://twitter.com/5aelo
+- Niklas B https://twitter.com/_niklasb
+- Tihmstar https://twitter.com/tihmstar
+- Coolstar https://twitter.com/coolstarorg
+- Luca Todesco https://twitter.com/qwertyoruiopz
+- KJC Research 
+- Comex 
+- PanguTeam https://twitter.com/panguteam
+- Ian Beer https://twitter.com/i4nbeer
+- Argp https://twitter.com/_argp
+- Evad3rs 
 - Jonathan Levin (For the jailbreak toolkit)
 - Lokihardt (For being able to pwn browsers within a wink)
 - Sem Voigtländer (just a techie)
