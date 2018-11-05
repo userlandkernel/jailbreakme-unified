@@ -69,7 +69,7 @@ function supported_osversion() {
 //returns whether the exploit needs offsets for the client device
 function needs_offsets() {
     var device = current_device();
-    return device.OSVersion >= 10 && device.OSVersion <= 11.4;
+    return device.OSVersion >= 10 && device.OSVersion <= 12.01;
 }
 
 //returns whether the model and os version of the client were recognized
@@ -213,7 +213,7 @@ function strategy_select() {
         
         if(supported) {
             
-            puts('Chose Niklas B\'s jailbreakme');
+            puts('Chose Kuduma\'s jailbreakme');
             include('libsploit.ios.1201'); //include the strategy module
             start_strategy('wk1201go'); //schedule the strategy for launch
             return true;

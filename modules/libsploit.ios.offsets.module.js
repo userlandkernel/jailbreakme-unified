@@ -27,6 +27,8 @@ var Offsets = function Offsets(sw_vers, productname) {
     offsets["iPhone 8"] = [];
     offsets["iPhone 8+"] = [];
     offsets["iPhone X"] = [];
+    offsets["iPhone XS"] = [];
+    offsets["iPhone XR"] = [];
     
     //iPads
     offsets["iPad Air"] = [];
@@ -242,6 +244,23 @@ var Offsets = function Offsets(sw_vers, productname) {
         linkcode_gadget: 0x187bd18c8
     };
     
+    offsets["iPhone 6S"][12.01] = {
+        vtable: 0x1B1C95058,
+        disableprimitivegigacage: 0x1881cbf54,
+        g_gigacagebaseptrs: 0x1b80ec000,
+        g_typedarraypoisons: 0,
+        startfixedmempool: 0,
+        endfixedmempool: 0,
+        jit_writeseperateheaps_func: 0x1ba0610d0,
+        usefastpermissions_jitcopy: 0x1b80f0018,
+        ptr_stack_check_guard: 0x1b9fa9a18,
+        dlsym: 0x180923d64,
+        longjmp: 0x180adc598,
+        callbacks: 0x1b80f01a8,
+        modelio_popx8: 0,
+        linkcode_gadget: 0x188214890
+    }
+
     //fixing up offsets that are the same accross devices, without having to allocate more memory for them.
     offsets["iPhone 5S"][11.3] = offsets["iPhone 5S"][11.31];
     offsets["iPhone 6"][11.3] = offsets["iPhone 6"][11.31];

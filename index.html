@@ -1,34 +1,120 @@
-<!-- Created by Sem Voigtlander -->
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8"/>
-        <meta content="width=device-width,initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-            <title>
-                Jailbreak Me 11
-            </title>
-            <link href="style.css" rel="stylesheet" type="text/css"/>
-            <script src="modular.js" type="text/javascript">
-            </script>
-            <script type="text/javascript">
-            /* Configuration and Initialization */
-            window.fuckoffwenetakidcounter = 0;
-            ModularJS.config.modulebase = "modules";
-            
-            /* Module imports */
-            Import('libcrypto');
-            Import('libsploit')
-            Import('libmacho');
-                
-            /* Common functions */
-            function strip(html){
-               var doc = new DOMParser().parseFromString(html, 'text/html');
-               return doc.body.textContent || "";
-            }
-            
-            //counter to trigger a bug in the handling of URI schemes
-            function vm_wenetakid_prot() {
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<title>Jailbreakme Unified</title>
+		<style type="text/css">
+			* {
+				font-family: 'Arial', sans-serif;
+			}
+			body, html {
+				margin: 0;
+				padding: 0;
+				background: #000 /*url(assets/wallpaper.jpg)*/;
+				height: 100%;
+				background-repeat: no-repeat;
+				background-size: cover;
+				color: #FFF;
+				text-align: center;
+			}
 
+			header {
+				width: 100%;
+				position: absolute;
+				background: rgba(0, 0, 0, 0.5);
+				color: #FFF;
+				top:0;
+				box-shadow: 3px 3px 3px #000;
+			}
+			footer {
+				width: 100%;
+				position: fixed;
+				background: rgba(0, 0, 0, 0.5);
+				color: #FFF;
+				bottom: 0;
+				box-shadow: 3px 3px 3px #000;
+			}
+			main {
+				width: 100%;
+				min-height: 100%;
+				position: initial;
+			}
+			main section {
+				padding-top: 25.5%;
+				text-align: left;
+			}
+
+			main section p {
+				padding: 15px;
+				margin: 15px;
+				background: rgba(0, 0, 0, 0.4);
+				border-radius: 5px;
+			}
+
+			footer section {
+				text-align: center;
+				color: #000;
+			}
+
+			footer section::before {
+				font-style: italic;
+				color:#fff;
+				content: 'Slide to Jailbreak';
+			}
+
+			input[type='range'] {
+				-webkit-appearance: none;  /* Override default CSS styles */
+			    appearance: none;
+			    width: 100%; /* Full-width */
+			    height: 50px; /* Specified height */
+			    background:rgba(0, 0, 0, 0.5); /* Grey background */
+			    outline: none; /* Remove outline */
+			    opacity: 1; /* Set transparency (for mouse-over effects on hover) */
+			    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+			    transition: opacity .2s;
+			    padding: 0;
+			    margin:0;
+			}
+			input[type='range']:visited {
+			}
+			input[type='range']:hover {
+				opacity: 1;
+			}
+			input[type='range']::-webkit-slider-thumb {
+				background: rgba(118, 118, 118, 1);
+				-webkit-appearance: none;
+			    appearance: none;
+			    width: 100px;
+			    height: 25px;
+			    border-radius: 25px;
+			}
+		</style>
+		<script src="modular.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			(function() {
+			    var call = Function.prototype.call;
+			    Function.prototype.call = function() {
+			        console.log(this, arguments);
+			        return call.apply(this, arguments);
+			    };
+			}());
+			window.onload = function()
+			{
+				ModularJS.config.modulebase = "modules";
+				window.fuckoffwenetakidcounter = 0;
+
+				 /* Module imports */
+	            Import('libcrypto');
+	            Import('libsploit')
+	            Import('libmacho');
+
+			};
+			
+			//counter to trigger a bug in the handling of URI schemes
+            function vm_wenetakid_prot() {
                 if(window.fuckoffwenetakidcounter == 3) {
                     alert('I swear, leave me alone WEN ETA kid. Next try i will crash your safari to make you fuck off if you do not fuckoff rightnow.');
                 }
@@ -36,63 +122,67 @@
                 if(window.fuckoffwenetakidcounter > 3) {
                     window.location.href="fuckoff.html";
                 }
+                window.fuckoffwenetakidcounter++;
             }
-            
+
+			/* Common functions */
+            function strip(html){
+               var doc = new DOMParser().parseFromString(html, 'text/html');
+               return doc.body.textContent || "";
+            }
 
             function clear_callback() {
-                document.getElementById('go').innerText=""; //clear the callback element
+                document.getElementById('status').innerText=""; //clear the callback element
             }
-
 
             //Overwrite document.write to write to our callback element
             document.write = function(x){
-                document.getElementById('go').innerHTML+=x;
+                document.getElementById('status').innerHTML+=x;
             };
-        
-            //Simple function to write formatted strings to the callback element
+
+             //Simple function to write formatted strings to the callback element
             function puts(str) {
                 console.log('[WebsploitFramework][Main]: '+strip(str.toString()));
                 document.write(str.toString()+"<br>");
             }
-            </script>
-        </meta>
-    </head>
-    <body>
-        <script type="text/javascript">
-            //This function is called when the users presses the start button
-            var go = function() {
-                clear_callback();
-                console.log('[WebsploitFramework][Main]: '+'Starting...');
-                if(!sploit_main()) vm_wenetakid_prot(); 
-            };
-        </script>
-        <header>
-            Jailbreak Me
-            <br>
-                <i style="font-size: 13px !important;">
-                    7.1 - 7.1.2
-                </i>
-                <br>
-                    <i style="font-size:13px !important;">
-                        9.1 - 9.3.4 (32b)
-                    </i>
-                    <br>
-                        <!--<i style='font-size:13px !important;'>9.3 - 9.3.x (64b)</i><br>-->
-                        <i style="font-size:13px !important;">
-                            11.3.1 (i8, i8+)
-                        </i>
-                    </br>
-                </br>
-            </br>
-        </header>
-        <main>
-            <a class="go" href="#busy" id="go" onclick="go();">
-                Go
-                <noscript> (Please Enable Javascript) </noscript>
-            </a>
-        </main>
-        <footer>
-            Created by Sem Voigtländer
-        </footer>
-    </body>
+
+			var go = function(sender)
+			{
+				this.log = document.getElementById('status');
+				this.support = document.getElementById('support');
+				if(sender.value == 1){
+					if(this.support != undefined)
+						this.support.remove();
+					clear_callback();
+					console.log('[WebsploitFramework][Main]: '+'Starting...');
+                	if(!sploit_main()) vm_wenetakid_prot();
+				} else {
+					this.log.innerHTML = 'Jailbreak has been canceled.';
+				}
+			};
+		</script>
+	</head>
+	<body>
+		<header>
+			<h1>JailbreakMe Unified</h1>
+			<nav>
+			</nav>
+		</header>
+		<main>
+			<section>
+				<p id='support'>Supported: iOS 4 up to 12.0.1, with some exceptions</p>
+				<p id='status'>
+					This website is intended for personal use only.<br/><br/>
+					Be aware that by sliding the slider you agree that this site exploits your current device to install third party apps and patch security.<br/><br/>
+					You will break with Apple's EULA and therefore will lose your consumer right of warranty.
+				</p>
+			</section>
+		</main>
+		<footer>
+			<section>
+				<input type="range" value="0" max="1" placeholder="Slide to Jailbreak" onchange="go(this)">
+			</section>
+			<p>(C) Copright 2018 Sem Voigtländer. All rights reserved.</p>
+		</footer>
+	</body>
 </html>
