@@ -160,7 +160,7 @@ var Offsets = function Offsets(sw_vers, productname) {
         callbacks: 0x1b335d698,
         modelio_popx8: 0x18d2f6564, 
         coreaudio_popx2: 0x18409ddbc,
-        linkcode_gadget: 0 //Offsets taken from 11.3 should be the same, right?
+        linkcode_gadget: 0x187bd18c8 //May be really stupid reasoning, but compare the modelio_popx8 and coreaudio_popx2 between here and the iP8 and iPX, by this reasoning, the linkcode_gadget *should* be the same, right?
     };
     
     //iPhone 7+
