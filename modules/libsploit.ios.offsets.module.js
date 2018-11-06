@@ -3,6 +3,8 @@
     Use radare: "/c ldr x8, [sp, 0x28]; ldr x0, [x8, 0x18]; ldp x29, x30, [sp, 0x50]; add sp, sp, 0x60; ret"
 */
 
+var kOFFUnknown = 0xbaaaaaad;
+
 //Class for finding offsets by software version and product name
 //This may have to be updated one day when offsets become specific between different models with the same product name
 var Offsets = function Offsets(sw_vers, productname) {
@@ -259,7 +261,24 @@ var Offsets = function Offsets(sw_vers, productname) {
         callbacks: 0x1b80f01a8,
         modelio_popx8: 0,
         linkcode_gadget: 0x188214890
-    }
+    };
+
+    offsets["iPhone 7"][12.01] = {
+        vtable: kOFFUnknown,
+        disableprimitivegigacage: 0x18854ca8c,
+        g_gigacagebaseptrs: 0x1b1f64000,
+        g_typedarraypoisons: 0x1b35c9728,
+        startfixedmempool: 0x1b35c90b8,
+        endfixedmempool: 0x1b35c90c0,
+        jit_writeseperateheaps_func: 0x1b35c90c8,
+        usefastpermissions_jitcopy: 0x1b1f60018,
+        ptr_stack_check_guard: 0x1b3522ef8,
+        dlsym: 0x18084ef90,
+        longjmp: 0x180b126e8,
+        callbacks: 0x1b35c96a0,
+        modelio_popx8: kOFFUnknown,
+        linkcode_gadget: 0x187bf2fb4
+    };
 
     //fixing up offsets that are the same accross devices, without having to allocate more memory for them.
     offsets["iPhone 5S"][11.3] = offsets["iPhone 5S"][11.31];

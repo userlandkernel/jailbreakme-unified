@@ -232,6 +232,7 @@ function detectOSVersion() {
 function convertBuild(str) {
     if(typeof str !== 'string' && typeof str !== 'number') return null;
     var build = [];
+    build['15E148'] = 12.01;
     build['15F79'] = 11.4;
     build['15E302'] = 11.31;
     build['15E216'] = 11.301;
@@ -317,7 +318,9 @@ function detectDeviceType() {
 }
 
 
-//Algorithm for detecting the productname of the iOS client device based on producttype, resolution and GPU.
+// Algorithm for detecting the productname of the iOS client device based on producttype, resolution and GPU.
+// Yes, I know, there's no AppleTV and iPod yet but feel free to add that logic.
+// I'll need to rewrite this logic to parse from either JSON or Plist one day
 function detectProductName(t, width, height, gpu) {
 
     if(!t && !width && !height && !gpu) return false; //performance optimalisation
@@ -368,6 +371,8 @@ function detectProductName(t, width, height, gpu) {
         
         if(width === 768 && height === 1024 && gpu == 'A9X') return ['9.7-inch iPad Pro'];
         
+        if(width === 768 && height === 1024 && gpu == 'A10') return ['iPad 6 (Cellular)'];
+
         if(width === 834 && height === 1112 && gpu == 'A10X') return ['10.5-inch iPad Pro'];
         if(width === 1024 && height === 1366 && gpu == 'A10X') return ['12.9-inch iPad Pro'];
     
