@@ -158,8 +158,8 @@ var Offsets = function Offsets(sw_vers, productname) {
         dlsym: 0x182c12f90, //Calling dlsym up yourself produces a differnet value, don't know why
         longjmp: 0x180b12778,
         callbacks: 0x1b335d698,
-        modelio_popx8: 0, 
-        coreaudio_popx2: 0,
+        modelio_popx8: 0x18d2f6564, 
+        coreaudio_popx2: 0x18409ddbc,
         linkcode_gadget: 0 //Offsets taken from 11.3 should be the same, right?
     };
     
