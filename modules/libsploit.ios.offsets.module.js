@@ -149,15 +149,14 @@ var Offsets = function Offsets(sw_vers, productname) {
         disableprimitivegigacage: 0x18851a7d4,
         g_gigacagebaseptrs: 0x1b1d08000,
         g_typedarraypoisons: 0x1b335d720,
+        longjmp: 0x180b12778,
         dlsym: 0x18084ef90,
         startfixedmempool: 0x1b335d0b8,
         endfixedmempool: 0x1b335d0c0,
         jit_writeseperateheaps_func: 0x1b335d0c8,
         usefastpermissions_jitcopy: 0x1b1d04018,
         ptr_stack_check_guard: 0x1b32b7ef8,
-        dlsym: 0x182c12f90, //Calling dlsym up yourself produces a differnet value, don't know why
-        longjmp: 0x180b12778,
-        callbacks: 0x1b335d698,
+        callbacks: 0x1b335d698, //May as well leave this here, no idea why it is here compared to the others.
         modelio_popx8: 0x18d2f6564, 
         coreaudio_popx2: 0x18409ddbc,
         linkcode_gadget: 0x187bd18c8 //May be really stupid reasoning, but compare the modelio_popx8 and coreaudio_popx2 between here and the iP8 and iPX, by this reasoning, the linkcode_gadget *should* be the same, right?
