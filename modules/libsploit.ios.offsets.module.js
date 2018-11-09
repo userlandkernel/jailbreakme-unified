@@ -147,6 +147,7 @@ var Offsets = function Offsets(sw_vers, productname) {
         padding: 0x18,
         vtable: 0x189c9a808,
         disableprimitivegigacage: 0x18851a7d4,
+        callbacks: 0x1b335d698,
         g_gigacagebaseptrs: 0x1b1d08000,
         g_typedarraypoisons: 0x1b335d720,
         longjmp: 0x180b12778,
@@ -156,10 +157,9 @@ var Offsets = function Offsets(sw_vers, productname) {
         jit_writeseperateheaps_func: 0x1b335d0c8,
         usefastpermissions_jitcopy: 0x1b1d04018,
         ptr_stack_check_guard: 0x1b32b7ef8,
-        callbacks: 0x1b335d698, //May as well leave this here, no idea why it is here compared to the others.
         modelio_popx8: 0x18d2f6564, 
         coreaudio_popx2: 0x18409ddbc,
-        linkcode_gadget: 0x187bd1204 //Should be correct after another look.
+        linkcode_gadget: 0x187bd1204 
     };
     
     //iPhone 7+
@@ -260,6 +260,23 @@ var Offsets = function Offsets(sw_vers, productname) {
         callbacks: 0x1b80f01a8,
         modelio_popx8: 0,
         linkcode_gadget: 0x188214890
+    };
+    
+    offsets["iPhone SE"][12.01] = {
+        vtable: 0x23b419058, /*I got this for you*/,
+        disableprimitivegigacage: 0x1881cbf54,
+        g_gigacagebaseptrs: 0x1b80e4000,
+        g_typedarraypoisons: idk,
+        startfixedmempool: idk,
+        endfixedmempool: idk,
+        jit_writeseperateheaps_func: 0x1ba0590d0,
+        usefastpermissions_jitcopy: 0x1b80e8018,
+        ptr_stack_check_guard: 0x1b9fa1a18,
+        dlsym: 0x180923d64,
+        longjmp: 0x180adc630,
+        callbacks: 0x1b80e81a8,
+        modelio_popx8: 0xffffffff76874000, /*This is modelio base in UFO finder idk if it is correct*/
+        linkcode_gadget: idk //Thanks to ivanhrabcak to finding these.
     };
 
     offsets["iPhone 7"][12.01] = {
