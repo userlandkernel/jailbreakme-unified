@@ -11,87 +11,132 @@
  *    UI Design by Sem Voigtländer                                                                                                                                               
  *                                                                                                                                                   
  */
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 8px;
+  background-color: rgba(0, 0, 0, 0.5); /* or add it to the track */
+}
+
 * {
-				font-family: 'Arial', sans-serif;
-			}
+	font-family: 'Arial', sans-serif;
+}
 
-			body, html {
-				margin: 0;
-				padding: 0;
-				min-height: 100%;
-				color: #FFF;
-				text-align: center;
-				background-size: cover;
-			}
+body, html {
+	margin: 0;
+	padding: 0;
+	min-height: 100%;
+	color: #FFF;
+	text-align: center;
+	background-size: cover;
+}
 
-			header {
-				width: 100%;
-				position: fixed;
-				background: rgba(0, 0, 0, 0.5);
-				color: #FFF;
-				top:0;
-				box-shadow: 3px 3px 3px #000;
-			}
-			footer {
-				width: 100%;
-				position: fixed;
-				background: rgba(0, 0, 0, 0.5);
-				color: #FFF;
-				bottom: 0;
-				box-shadow: 3px 3px 3px #000;
-			}
-			main {
-				width: 100%;
-				min-height: 100%;
-				padding-bottom: 50%;
-				position: initial;
-			}
-			main section {
-				padding-top: 25.5%;
-				text-align: left;
-			}
+header {
+	width: 100%;
+	position: fixed;
+	background: rgba(0, 0, 0, 0.5);
+	color: #FFF;
+	top:0;
+	box-shadow: 3px 3px 3px #000;
+}
+footer {
+	width: 100%;
+	position: fixed;
+	background: rgba(0, 0, 0, 0.5);
+	color: #FFF;
+	bottom: 0;
+	box-shadow: 3px 3px 3px 6px #000;
+}
+main {
+	width: 100%;
+	min-height: 100%;
+	padding-bottom: 50%;
+	position: initial;
+}
+main section {
+	padding-top: 25.5%;
+	text-align: left;
+}
 
-			main section p {
-				padding: 15px;
-				margin: 15px;
-				background: rgba(0, 0, 0, 0.4);
-				border-radius: 5px;
-			}
+main section p {
+	padding: 15px;
+	margin: 15px;
+	background: rgba(0, 0, 0, 0.4);
+	border-radius: 5px;
+}
 
-			footer section {
-				text-align: center;
-				color: #000;
-			}
+footer section {
+	text-align: center;
+	color: #000;
+}
 
-			footer section::before {
-				font-style: italic;
-				color:#fff;
-				content: 'Slide to Jailbreak';
-			}
+footer section::before {
 
-			input[type='range'] {
-				-webkit-appearance: none;  /* Override default CSS styles */
-			    appearance: none;
-			    width: 100%; /* Full-width */
-			    height: 50px; /* Specified height */
-			    background:rgba(0, 0, 0, 0.5); /* Grey background */
-			    outline: none; /* Remove outline */
-			    opacity: 1; /* Set transparency (for mouse-over effects on hover) */
-			    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
-			    transition: opacity .2s;
-			    padding: 0;
-			    margin:0;
-			}
-			input[type='range']:visited {
-			}
-			input[type='range']:hover {
-				opacity: 1;
-			}
-			input[type='range']::-webkit-slider-thumb {
-				background: rgba(118, 118, 118, 1);
-				-webkit-appearance: none;
-			    appearance: none;
-			    width: 100px;
-			    height: 25px;
-			    border-radius: 25px;
-			}
+}
+
+input[type='range'] {
+	-webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    width: calc(100% - 50px); /* Full-width */
+    height: 50px; /* Specified height */
+    background:rgba(0, 0, 0, 0.5); /* Grey background */
+    outline: none; /* Remove outline */
+    opacity: 1; /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+    padding-right: 0;
+    margin:0;
+    border-radius: 15px;
+}
+
+footer section::before {
+	font-style: bold;
+	color:#fff;
+	font-family: 'Consolas';
+	content: 'SLIDE TO JAILBREAK';
+	font-size: 14px;
+	padding: 2px;
+	position: relative;
+	z-index: -1;
+	text-align: center;
+	display: block;
+	width: 100%;
+}
+
+
+footer section::after {
+	font-style: bold;
+	font-weight: bold;
+	color:#fff;
+	font-family: 'Consolas';
+	content: '© Copright 2018 Sem Voigtländer';
+	font-size: 15px;
+	padding: 2px;
+	position: relative;
+	z-index: -1;
+	text-align: center;
+	display: block;
+	width: 100%;
+}
+
+input[type='range']:hover {
+	opacity: 1;
+}
+input[type='range']::-webkit-slider-runnable-track{
+	margin-right: 50px;
+	z-index: 100;
+}
+input[type='range']::-webkit-slider-thumb {
+	cursor: pointer;
+	background: rgba(200, 200, 200, 0.7);
+	-webkit-appearance: none;
+    appearance: none;
+    width: 50px;
+    height: 35px;
+    border-radius: 15px;
+    z-index: 9999;
+    margin-left: 15px;
+    margin-right: 15px;
+    padding-right: 15px;
+    box-shadow: 5px 5px 5px #000;
+}

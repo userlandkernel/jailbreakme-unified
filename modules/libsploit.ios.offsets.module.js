@@ -280,7 +280,7 @@ var Offsets = function Offsets(sw_vers, productname) {
     };
     
     offsets["iPhone SE"][12.01] = {
-        vtable: 0x23b419058, /*I got this for you*/,
+        vtable: 0x23b419058,
         disableprimitivegigacage: 0x1881cbf54,
         g_gigacagebaseptrs: 0x1b80e4000,
         g_typedarraypoisons: kOFFUnknown,
