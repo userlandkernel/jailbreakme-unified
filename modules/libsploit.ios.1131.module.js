@@ -12,6 +12,8 @@ using('liblogging');
 using('libaddressspace');
 using('libc');
 
+print = alert;
+
 var memdump_addr = 0;
 var dyld_shared_cache_base = 0x180000000;
 

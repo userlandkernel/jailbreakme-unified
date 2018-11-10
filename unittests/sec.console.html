@@ -1,0 +1,4 @@
+<script>
+    window.cnt = 0;window.int = setInterval(function(){console.dirxml(console.group(),console.groupEnd(), console.groupCollapsed()); window.cnt++;document.body.innerHTML=('free() -> '+window.cnt+'<br>');  if(window.cnt > 1000){ clearInterval(window.int);alert('done');console.log('No bug :(')}},0.01);
+    
+</script>

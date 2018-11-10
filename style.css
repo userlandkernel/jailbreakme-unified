@@ -11,63 +11,87 @@
  *    UI Design by Sem Voigtländer                                                                                                                                               
  *                                                                                                                                                   
  */
-
-/* Global */
 * {
-	font-family: monospace, Arial, sans-serif;
-	font-size: 36px;
-}
+				font-family: 'Arial', sans-serif;
+			}
 
- /* View */
- body, html {
- 	background: #000000;
- 	margin: 0;
- 	padding: 0;
- 	font-size: 16px;
- 	width: 100%;
- 	height: 100%;
- 	color: white;
- }
+			body, html {
+				margin: 0;
+				padding: 0;
+				min-height: 100%;
+				color: #FFF;
+				text-align: center;
+				background-size: cover;
+			}
 
+			header {
+				width: 100%;
+				position: fixed;
+				background: rgba(0, 0, 0, 0.5);
+				color: #FFF;
+				top:0;
+				box-shadow: 3px 3px 3px #000;
+			}
+			footer {
+				width: 100%;
+				position: fixed;
+				background: rgba(0, 0, 0, 0.5);
+				color: #FFF;
+				bottom: 0;
+				box-shadow: 3px 3px 3px #000;
+			}
+			main {
+				width: 100%;
+				min-height: 100%;
+				padding-bottom: 50%;
+				position: initial;
+			}
+			main section {
+				padding-top: 25.5%;
+				text-align: left;
+			}
 
-body {
-	width: 100%;
-	height: 100%;
-}
+			main section p {
+				padding: 15px;
+				margin: 15px;
+				background: rgba(0, 0, 0, 0.4);
+				border-radius: 5px;
+			}
 
-header {
-	padding-top: 25px;
-	text-align: center;
-	font-size: 42px;
-	font-weight: bold;
-}
+			footer section {
+				text-align: center;
+				color: #000;
+			}
 
-main {
-	width: 100%;
-	text-align: center;
-	padding-top: 25%;
-}
+			footer section::before {
+				font-style: italic;
+				color:#fff;
+				content: 'Slide to Jailbreak';
+			}
 
-.go {
-	padding-top: 15px;
-	padding-bottom: 15px;
-	min-width: 50px;
-	max-width: 90%;
-	background: rgba(252, 252, 252, 0.7);
-}
-
-.go, .go * {
-	text-align: center;
-	text-decoration: none;
-	font-weight: bold;
-	font-size: 15px !important;
-	border-radius: 7px;
-	color: purple;
-	display: inline-block;
-	box-decoration-break: slice;
-}
-
-footer {
-	padding-top: 25%;
-	text-align: center;
-}
+			input[type='range'] {
+				-webkit-appearance: none;  /* Override default CSS styles */
+			    appearance: none;
+			    width: 100%; /* Full-width */
+			    height: 50px; /* Specified height */
+			    background:rgba(0, 0, 0, 0.5); /* Grey background */
+			    outline: none; /* Remove outline */
+			    opacity: 1; /* Set transparency (for mouse-over effects on hover) */
+			    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+			    transition: opacity .2s;
+			    padding: 0;
+			    margin:0;
+			}
+			input[type='range']:visited {
+			}
+			input[type='range']:hover {
+				opacity: 1;
+			}
+			input[type='range']::-webkit-slider-thumb {
+				background: rgba(118, 118, 118, 1);
+				-webkit-appearance: none;
+			    appearance: none;
+			    width: 100px;
+			    height: 25px;
+			    border-radius: 25px;
+			}

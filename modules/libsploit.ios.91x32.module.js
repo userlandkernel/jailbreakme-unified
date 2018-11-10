@@ -12,6 +12,8 @@
 module('liblogging');
 module('libstorage');
 
+print = alert;
+
 function getArrFromResource(res) {
     while (res.length % 4) {
         res += "A";
