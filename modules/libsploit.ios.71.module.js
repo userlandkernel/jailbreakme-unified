@@ -10,8 +10,6 @@
 
 using('liblogging');
 
-print = alert;
-
 //initialization
 var ctrladdr = 0;
 var dyldsharedcachebase = 0;

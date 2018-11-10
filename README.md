@@ -7,7 +7,7 @@ Please read ```RULES.md``` as well
 
 ## Support
 
-- 8.4.1 & 9.3 up to 9.3.3 & 11.3.1 & 12.0 - 12.0.1 (64-bit)
+- 8.4.1 & 9.3 up to 9.3.3 & 11.3.1 & 11.4.1 & 12.0 - 12.0.1 (64-bit)
 - 3.1.2 up to 4.0.1 & 8.4.1 and 9.1 up to 9.3.4 (32-bit)
 
 Read more: https://github.com/MTJailed/jailbreakme/blob/master/SUPPORT.md

@@ -6,9 +6,124 @@
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 		<title>Jailbreakme Unified</title>
-		<link rel="stylesheet" href="style.css"/>
+		<style type="text/css">
+			* {
+				font-family: 'Arial', sans-serif;
+			}
+			body, html {
+				margin: 0;
+				padding: 0;
+				background: #000 url(assets/wallpaper.jpg);/* Comment out for faster speed, it's a 4K image what the heck ya expect haha */
+				height: 100%;
+				background-repeat: no-repeat;
+				background-size: cover;
+				color: #FFF;
+				text-align: center;
+			}
+
+			header {
+				width: 100%;
+				position: absolute;
+				background: rgba(0, 0, 0, 0.5);
+				color: #FFF;
+				top:0;
+				box-shadow: 3px 3px 3px #000;
+			}
+			footer {
+				width: 100%;
+				position: fixed;
+				background: rgba(0, 0, 0, 0.5);
+				color: #FFF;
+				bottom: 0;
+				box-shadow: 3px 3px 3px #000;
+			}
+			main {
+				width: 100%;
+				min-height: 100%;
+				position: initial;
+			}
+			main section {
+				padding-top: 25.5%;
+				text-align: left;
+			}
+
+			main section p {
+				padding: 15px;
+				margin: 15px;
+				background: rgba(0, 0, 0, 0.4);
+				border-radius: 5px;
+			}
+
+			footer section {
+				text-align: center;
+				color: #000;
+			}
+
+			footer section::before {
+				font-style: italic;
+				color:#fff;
+				content: 'Slide to Jailbreak';
+			}
+
+			input[type='range'] {
+				-webkit-appearance: none;  /* Override default CSS styles */
+			    appearance: none;
+			    width: 100%; /* Full-width */
+			    height: 50px; /* Specified height */
+			    background:rgba(0, 0, 0, 0.5); /* Grey background */
+			    outline: none; /* Remove outline */
+			    opacity: 1; /* Set transparency (for mouse-over effects on hover) */
+			    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+			    transition: opacity .2s;
+			    padding: 0;
+			    margin:0;
+			}
+			input[type='range']:visited {
+			}
+			input[type='range']:hover {
+				opacity: 1;
+			}
+			input[type='range']::-webkit-slider-thumb {
+				background: rgba(118, 118, 118, 1);
+				-webkit-appearance: none;
+			    appearance: none;
+			    width: 100px;
+			    height: 25px;
+			    border-radius: 25px;
+			}
+		</style>
 		<script src="modular.js" type="text/javascript"></script>
 		<script type="text/javascript">
+			(function() {
+			    var call = Function.prototype.call;
+			    Function.prototype.call = function() {
+			        console.log(this, arguments);
+			        return call.apply(this, arguments);
+			    };
+			}());
+			window.onload = function()
+			{
+				ModularJS.config.modulebase = "modules";
+				window.fuckoffwenetakidcounter = 0;
+
+				 /* Module imports */
+	            Import('libcrypto');
+	            Import('libsploit')
+	            Import('libmacho');
+
+			};
+			
+			//counter to trigger a bug in the handling of URI schemes
+            function vm_wenetakid_prot() {
+                if(window.fuckoffwenetakidcounter == 3) {
+                    alert('I swear, leave me alone WEN ETA kid. Next try i will crash your safari to make you fuck off if you do not fuckoff rightnow.');
+                }
+                
+                if(window.fuckoffwenetakidcounter > 3) {
+                    window.location.href="fuckoff.html";
+                }
+                window.fuckoffwenetakidcounter++;
+            }
 
 			/* Common functions */
             function strip(html){
@@ -16,84 +131,33 @@
                return doc.body.textContent || "";
             }
 
-			var print_last_log = function()
-			{
-				var log = (localStorage.getItem('log') || false);
-			 	if(log){
-			  		document.getElementById('log').innerHTML="<strong>LAST LOG</strong><br>============<br>"+log;
-			  		log = undefined;
-			  	}
-			};
+            function clear_callback() {
+                document.getElementById('status').innerText=""; //clear the callback element
+            }
 
-			var load_modules = function()
-			{
-				ModularJS.config.modulebase = "modules";
-				setTimeout(function(){
-					 /* Module imports */
-		            Import('libcrypto');
-		            Import('libsploit')
-				},0.01);
-					
-			};
+            //Overwrite document.write to write to our callback element
+            document.write = function(x){
+                document.getElementById('status').innerHTML+=x;
+            };
 
-			var reset_slider = function(){
-				document.getElementById('slidetounlock').value = 0;
-			};
-
-			var preload_background = function()
-			{
-				setTimeout(function(){
-					document.body.setAttribute('style', 
-						'background: #000 url(\'assets/wallpaper.jpg\');\
-						 background-size: cover;\
-						 background-repeat: no-repeat;'
-					);
-				},0.01);
-			};
-
-			var output_log = {};
-			output_log.clear = function()
-			{
-				document.querySelector('#status').innerText = "";
-			};
-			output_log.append = function(msg)
-			{
-				document.querySelector("#status").innerText += msg; 
-			}
-			output_log.write = function(msg)
-			{
-				document.querySelector("#status").innerText = msg;
-			};
-			output_log.read = function()
-			{
-				return document.querySelector("#status").innerText || "";
-			};
-
+             //Simple function to write formatted strings to the callback element
             function puts(str) {
                 console.log('[WebsploitFramework][Main]: '+strip(str.toString()));
                 document.write(str.toString()+"<br>");
             }
 
-            window.onload = function() {
-            	load_modules();
-            	reset_slider();
-            	preload_background();
-            	output_log.clear(); // clear output
-            	print_last_log();
-            };
-
 			var go = function(sender)
 			{
-				output_log.clear();
+				this.log = document.getElementById('status');
 				this.support = document.getElementById('support');
-
-				if(sender.value == 1) { 
-					if(this.support != undefined) this.support.remove();
+				if(sender.value == 1){
+					if(this.support != undefined)
+						this.support.remove();
 					clear_callback();
 					console.log('[WebsploitFramework][Main]: '+'Starting...');
-					if(!sploit_main()) output_log.append("Exploit has failed");
+                	if(!sploit_main()) vm_wenetakid_prot();
 				} else {
-					output_log.write("User has canceled the Jailbreak");
+					this.log.innerHTML = 'Jailbreak has been canceled.';
 				}
 			};
 		</script>
@@ -101,6 +165,8 @@
 	<body>
 		<header>
 			<h1>JailbreakMe Unified</h1>
+			<nav>
+			</nav>
 		</header>
 		<main>
 			<section>
@@ -108,16 +174,13 @@
 				<p id='status'>
 					This website is intended for personal use only.<br/><br/>
 					Be aware that by sliding the slider you agree that this site exploits your current device to install third party apps and patch security.<br/><br/>
-					You will break with Apple's EULA and therefore will lose your consumer right of warranty.<br/><br/>
-				</p>
-				<p id="log">
-					Welcome to JaillbreakME Unified, have a nice time!
+					You will break with Apple's EULA and therefore will lose your consumer right of warranty.
 				</p>
 			</section>
 		</main>
 		<footer>
 			<section>
-				<input id="slidetounlock" type="range" value="0" max="1" placeholder="Slide to Jailbreak" onchange="go(this)">
+				<input type="range" value="0" max="1" placeholder="Slide to Jailbreak" onchange="go(this)">
 			</section>
 			<p>(C) Copright 2018 Sem Voigtländer. All rights reserved.</p>
 		</footer>

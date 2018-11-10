@@ -14,8 +14,6 @@
 using('liblogging');
 using('libstorage');
 
-print = alert;
-
 //Memory r/w buffers
 var mem0 = 0;
 var mem1 = 0;
