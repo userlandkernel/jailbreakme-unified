@@ -92,7 +92,7 @@ input[type='range'] {
 footer section::before {
 	font-style: bold;
 	color:#fff;
-	font-family: 'Consolas';
+	font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace;
 	content: 'SLIDE TO JAILBREAK';
 	font-size: 14px;
 	padding: 2px;
@@ -108,7 +108,7 @@ footer section::after {
 	font-style: bold;
 	font-weight: bold;
 	color:#fff;
-	font-family: 'Consolas';
+	font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace;
 	content: '© Copright 2018 Sem Voigtländer';
 	font-size: 15px;
 	padding: 2px;
