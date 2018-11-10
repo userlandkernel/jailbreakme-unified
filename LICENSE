@@ -25,6 +25,9 @@ The views and conclusions contained in the software and documentation are those
 of the authors and should not be interpreted as representing official policies,
 either expressed or implied, of the FreeBSD Project.
 
+Exceptions:
+James Seeley may not use or redistribute this software.
+
 
 This project has been modified and extended by Sem Voigtländer and contains the work of other individuals.
 (c) 2018, Niklas Baumsterk
@@ -36,3 +39,4 @@ This project has been modified and extended by Sem Voigtländer and contains the
 (c) 2018, Luca Todesco
 (c) 2018, PanguTeam
 (c) 2018, Jonathan Levin
+
