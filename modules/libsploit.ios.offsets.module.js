@@ -24,6 +24,7 @@ var Offsets = function Offsets(sw_vers, productname) {
     offsets["iPhone 6+"] = [];
     offsets["iPhone 6S"] = [];
     offsets["iPhone 6S+"] = [];
+    offsets["iPhone SE"] = [];
     offsets["iPhone 7"] = [];
     offsets["iPhone 7+"] = [];
     offsets["iPhone 8"] = [];
@@ -293,12 +294,12 @@ var Offsets = function Offsets(sw_vers, productname) {
         longjmp: 0x180adc630,
         callbacks: 0x1b80e81a8,
         modelio_popx8: kOFFUnknown, /*This is modelio base in UFO finder idk if it is correct*/
-        linkcode_gadget: kOFFUnknown //Thanks to ivanhrabcak to finding these.
+        linkcode_gadget: kOFFUnknown, //Thanks to ivanhrabcak to finding these.
     };
 
     offsets["iPhone 7"][12.01] = {
         vtable: kOFFUnknown,
-        disableprimitivegigacage,x18854ca8c,
+        disableprimitivegigacage:0x18854ca8c,
         g_gigacagebaseptrs: 0x1b1f64000,
         g_typedarraypoisons: 0x1b35c9728,
         startfixedmempool: 0x1b35c90b8,
