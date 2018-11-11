@@ -245,6 +245,25 @@ var Offsets = function Offsets(sw_vers, productname) {
         coreaudio_popx2: 0x18409ddbc,
         linkcode_gadget: 0x187bd18c8
     };
+
+    offsets["iPhone SE"][11.41] = {
+        padding: 0x20,
+        vtable: kOFFUnknown,
+        disableprimitivegigacage: 0x18854ca8c,
+        g_gigacagebaseptrs: 0x1b1d6c000,
+        g_typedarraypoisons: 0x1b3325728,
+        startfixedmempool: 0x1b33250b8,
+        endfixedmempool: 0x1b33250c0,
+        jit_writeseperateheaps_func: 0x1b33250c8,
+        usefastpermissions_jitcopy: 0x1b1d68018,
+        ptr_stack_check_guard: 0x1b327fef8,
+        dlsym: 0x18084ef90,
+        longjmp: 0x180b126e8,
+        callbacks: 0x1b33256a0,
+        modelio_popx8: kOFFUnknown,
+        coreaudio_popx2: kOFFUnknown,
+        linkcode_gadget: 0x187bf2fb4
+    };
     
     offsets["iPhone 6"][11.41] = {
         vtable: kOFFUnknown,
@@ -265,6 +284,8 @@ var Offsets = function Offsets(sw_vers, productname) {
     
     offsets["iPhone 6S"][12.01] = {
         vtable: 0x1B1C95058,
+        dlopen: 0x180923bb8,
+        confstr: 0x18096fa10,
         disableprimitivegigacage: 0x1881cbf54,
         g_gigacagebaseptrs: 0x1b80ec000,
         g_typedarraypoisons: kOFFUnknown,
@@ -277,6 +298,7 @@ var Offsets = function Offsets(sw_vers, productname) {
         longjmp: 0x180adc598,
         callbacks: 0x1b80f01a8,
         modelio_popx8: kOFFUnknown,
+        jscbase: 0x188174000,
         linkcode_gadget: 0x188214890
     };
     

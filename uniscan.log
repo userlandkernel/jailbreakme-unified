@@ -1,0 +1,363 @@
+####################################
+# Uniscan project                  #
+# http://uniscan.sourceforge.net/  #
+####################################
+V. 6.3
+
+
+Scan date: 10-11-2018 15:11:30
+===================================================================================================
+| Domain: https://www.crossyn.com/
+| Server: Apache
+| IP: 84.244.151.35
+===================================================================================================
+===================================================================================================
+| Looking for Drupal plugins/modules
+| 
+===================================================================================================
+| WEB SERVICES
+| 
+===================================================================================================
+| FAVICON.ICO
+| 
+===================================================================================================
+| ERROR INFORMATION
+| 
+|  Pagina niet gevonden :: Crossyn   -->     You are using an outdated browser. Please upgrade your browser to improve your experience. Skip to content    Menu -->         HomeDriverBusinessDevelopersPartnersNews &amp; InfoContactCareersFrequently Asked Questions                CROSSYN            404 Error  Oops, we could not find this page!  Go back to home.                    CROSSYN AUTOMOTIVE B.V. Burgemeester Brokxlaan 12 5041 SB Tilburg The Netherlands Phone: +31 (0) 85 01 50 041 Whatsapp: +31 (0)6 430 340 78 info@crossyn.com    Terms and Conditions &#62;  NL &#62;     Responsible Disclosure Policy &#62;   General Privacy Policy &#62; NL &#62;   Website Privacy & Cookie Policy &#62; NL &#62;    Jobs &#62;   Contact &#62;   FAQ &#62;                &nbsp;&copy; 2018&nbsp;Crossyn Automotive B.V.       Back to Top       
+===================================================================================================
+| TYPE ERROR
+| 
+===================================================================================================
+| SERVER MOBILE
+| 
+===================================================================================================
+| LANGUAGE
+| 
+| lang="en"
+===================================================================================================
+| INTERESTING STRINGS IN HTML
+| 
+| img src="/application/files/7915/1204/3813/bench-accounting-49025.jpg" alt="Save Costs" style="width: 457px; max-width: 96%; height: auto;"> 
+| span id="ccm-account-menu-container">
+| a target="_blank" href="https://twitter.com/CrossynAuto">
+| a target="_blank" href="https://www.facebook.com/crossyn/">
+| a href="mailto: info@crossyn.com">info@crossyn.com
+===================================================================================================
+| WHOIS
+| 
+===================================================================================================
+| BANNER GRABBING: 
+| X-Meta-Generator: concrete5 - 8.2.1
+===================================================================================================
+===================================================================================================
+| PING
+| 
+| PING www.crossyn.com (84.244.151.35) 56(84) bytes of data.
+| 64 bytes from skywalker.atsc.nl (84.244.151.35): icmp_seq=1 ttl=58 time=6.60 ms
+| 64 bytes from skywalker.atsc.nl (84.244.151.35): icmp_seq=2 ttl=58 time=5.33 ms
+| 64 bytes from skywalker.atsc.nl (84.244.151.35): icmp_seq=3 ttl=58 time=5.28 ms
+| 64 bytes from skywalker.atsc.nl (84.244.151.35): icmp_seq=4 ttl=58 time=5.03 ms
+| 
+| --- www.crossyn.com ping statistics ---
+| 4 packets transmitted, 4 received, 0% packet loss, time 81ms
+| rtt min/avg/max/mdev = 5.029/5.561/6.602/0.614 ms
+===================================================================================================
+| TRACEROUTE
+| 
+| traceroute to www.crossyn.com (84.244.151.35), 30 hops max, 60 byte packets
+|  1  * * *
+|  2  * * *
+|  3  * * *
+|  4  * * *
+|  5  * * *
+|  6  * * *
+|  7  * * *
+|  8  * * *
+|  9  * * *
+| 10  * * *
+| 11  * * *
+| 12  * * *
+| 13  * * *
+| 14  * * *
+| 15  * * *
+| 16  * * *
+| 17  * * *
+| 18  * * *
+| 19  * * *
+| 20  * * *
+| 21  * * *
+| 22  * * *
+| 23  * * *
+| 24  * * *
+| 25  * * *
+| 26  * * *
+| 27  * * *
+| 28  * * *
+| 29  * * *
+| 30  * * *
+===================================================================================================
+| NSLOOKUP
+| 
+| Server:		192.168.200.14
+| Address:	192.168.200.14#53
+| 
+| Non-authoritative answer:
+| *** Can't find www.crossyn.com: No answer
+| Authoritative answers can be found from:
+| crossyn.com
+| 	origin = ns1.atsc.nl
+| 	mail addr = hostmaster.crossyn.com
+| 	serial = 2018092003
+| 	refresh = 14400
+| 	retry = 3600
+| 	expire = 1209600
+| 	minimum = 86400
+| Name:	www.crossyn.com
+| Address: 84.244.151.35
+| ns1.atsc.nl	internet address = 84.244.151.36
+===================================================================================================
+| NMAP
+| 
+| Starting Nmap 7.70 ( https://nmap.org ) at 2018-11-10 15:12 CET
+| NSE: Loaded 148 scripts for scanning.
+| NSE: Script Pre-scanning.
+| Initiating NSE at 15:12
+| Completed NSE at 15:12, 0.00s elapsed
+| Initiating NSE at 15:12
+| Completed NSE at 15:12, 0.00s elapsed
+| Initiating Ping Scan at 15:12
+| Scanning www.crossyn.com (84.244.151.35) [4 ports]
+| Completed Ping Scan at 15:12, 0.03s elapsed (1 total hosts)
+| Initiating Parallel DNS resolution of 1 host. at 15:12
+| Completed Parallel DNS resolution of 1 host. at 15:12, 0.00s elapsed
+| Initiating SYN Stealth Scan at 15:12
+| Scanning www.crossyn.com (84.244.151.35) [1000 ports]
+| Discovered open port 53/tcp on 84.244.151.35
+| Discovered open port 995/tcp on 84.244.151.35
+| Discovered open port 587/tcp on 84.244.151.35
+| Discovered open port 443/tcp on 84.244.151.35
+| Discovered open port 21/tcp on 84.244.151.35
+| Discovered open port 80/tcp on 84.244.151.35
+| Discovered open port 993/tcp on 84.244.151.35
+| Completed SYN Stealth Scan at 15:12, 1.24s elapsed (1000 total ports)
+| Initiating Service scan at 15:12
+| Scanning 7 services on www.crossyn.com (84.244.151.35)
+| Completed Service scan at 15:12, 16.02s elapsed (7 services on 1 host)
+| Initiating OS detection (try #1) against www.crossyn.com (84.244.151.35)
+| Retrying OS detection (try #2) against www.crossyn.com (84.244.151.35)
+| Initiating Traceroute at 15:12
+| Completed Traceroute at 15:12, 0.01s elapsed
+| NSE: Script scanning 84.244.151.35.
+| Initiating NSE at 15:12
+| Completed NSE at 15:13, 15.23s elapsed
+| Initiating NSE at 15:13
+| Completed NSE at 15:13, 0.01s elapsed
+| Nmap scan report for www.crossyn.com (84.244.151.35)
+| Host is up (0.00089s latency).
+| rDNS record for 84.244.151.35: skywalker.atsc.nl
+| Not shown: 984 closed ports
+| PORT     STATE    SERVICE            VERSION
+| 20/tcp   filtered ftp-data
+| 21/tcp   open     ftp                ProFTPD
+| | ssl-cert: Subject: commonName=localhost/organizationName=none/stateOrProvinceName=Someprovince/countryName=GB
+| | Issuer: commonName=localhost/organizationName=none/stateOrProvinceName=Someprovince/countryName=GB
+| | Public Key type: rsa
+| | Public Key bits: 1024
+| | Signature Algorithm: sha1WithRSAEncryption
+| | Not valid before: 2011-07-19T08:56:59
+| | Not valid after:  2038-12-03T08:56:59
+| | MD5:   7ca0 14bc e517 e437 b49c aca7 17cc fbc6
+| |_SHA-1: 77bc fd19 856a a562 f719 604a 0461 2093 b012 5405
+| |_ssl-date: 2018-11-10T14:12:54+00:00; 0s from scanner time.
+| | tls-nextprotoneg: 
+| |_  ftp
+| 22/tcp   filtered ssh
+| 53/tcp   open     domain             (unknown banner: Not disclosed)
+| | dns-nsid: 
+| |_  bind.version: Not disclosed
+| | fingerprint-strings: 
+| |   DNSVersionBindReqTCP: 
+| |     version
+| |     bind
+| |_    disclosed
+| 80/tcp   open     http               Apache httpd
+| | http-methods: 
+| |_  Supported Methods: GET HEAD POST OPTIONS
+| |_http-server-header: Apache
+| |_http-title: Did not follow redirect to https://www.crossyn.com/
+| 443/tcp  open     ssl/ssl            Apache httpd (SSL-only mode)
+| |_http-favicon: Unknown favicon MD5: 5DE6A084D529C0D0D8E8D62CDD9151BA
+| |_http-generator: concrete5 - 8.2.1
+| | http-methods: 
+| |_  Supported Methods: GET HEAD POST OPTIONS
+| | http-robots.txt: 15 disallowed entries 
+| | /application/attributes /application/authentication 
+| | /application/bootstrap /application/config /application/controllers 
+| | /application/elements /application/helpers /application/jobs 
+| | /application/languages /application/mail /application/models 
+| | /application/page_types /application/single_pages /application/tools 
+| |_/application/views
+| |_http-server-header: Apache
+| | http-title: Crossyn: Smarter Mobility
+| |_Requested resource was https://www.crossyn.com/crossyn
+| | ssl-cert: Subject: commonName=www.crossyn.com/organizationName=Crossyn Automotive B.V./stateOrProvinceName=Noord-Brabant/countryName=NL
+| | Subject Alternative Name: DNS:www.crossyn.com, DNS:crossyn.com, DNS:servicedesk.crossyn.com, DNS:sp-portal.crossyn.com, DNS:drivers.crossyn.com, DNS:workshops.crossyn.com
+| | Issuer: commonName=GeoTrust EV RSA CA 2018/organizationName=DigiCert Inc/countryName=US
+| | Public Key type: rsa
+| | Public Key bits: 2048
+| | Signature Algorithm: sha256WithRSAEncryption
+| | Not valid before: 2018-07-15T00:00:00
+| | Not valid after:  2020-08-13T12:00:00
+| | MD5:   8534 b221 d8a5 5c74 0c7c f75b 2d59 4878
+| |_SHA-1: e699 2497 552c 38f4 3f08 4978 b91e cb18 7447 2820
+| |_ssl-date: 2018-11-10T14:12:55+00:00; 0s from scanner time.
+| 465/tcp  filtered smtps
+| 587/tcp  open     smtp               Exim smtpd
+| | smtp-commands: skywalker.atsc.nl Hello host-5.seclab.nl [145.220.75.5], SIZE 52428800, 8BITMIME, PIPELINING, AUTH PLAIN LOGIN, STARTTLS, HELP, 
+| |_ Commands supported: AUTH STARTTLS HELO EHLO MAIL RCPT DATA BDAT NOOP QUIT RSET HELP 
+| | ssl-cert: Subject: commonName=www.crossyn.com/organizationName=Crossyn Automotive B.V./stateOrProvinceName=Noord-Brabant/countryName=NL
+| | Subject Alternative Name: DNS:www.crossyn.com, DNS:crossyn.com, DNS:servicedesk.crossyn.com, DNS:sp-portal.crossyn.com, DNS:drivers.crossyn.com, DNS:workshops.crossyn.com
+| | Issuer: commonName=GeoTrust EV RSA CA 2018/organizationName=DigiCert Inc/countryName=US
+| | Public Key type: rsa
+| | Public Key bits: 2048
+| | Signature Algorithm: sha256WithRSAEncryption
+| | Not valid before: 2018-07-15T00:00:00
+| | Not valid after:  2020-08-13T12:00:00
+| | MD5:   8534 b221 d8a5 5c74 0c7c f75b 2d59 4878
+| |_SHA-1: e699 2497 552c 38f4 3f08 4978 b91e cb18 7447 2820
+| |_ssl-date: 2018-11-10T14:12:54+00:00; 0s from scanner time.
+| 993/tcp  open     ssl/imap           Dovecot imapd
+| |_imap-capabilities: post-login ENABLE SASL-IR OK IMAP4rev1 have more LOGIN-REFERRALS ID AUTH=PLAINA0001 Pre-login listed capabilities IDLE LITERAL+
+| | ssl-cert: Subject: commonName=www.crossyn.com/organizationName=Crossyn Automotive B.V./stateOrProvinceName=Noord-Brabant/countryName=NL
+| | Subject Alternative Name: DNS:www.crossyn.com, DNS:crossyn.com, DNS:servicedesk.crossyn.com, DNS:sp-portal.crossyn.com, DNS:drivers.crossyn.com, DNS:workshops.crossyn.com
+| | Issuer: commonName=GeoTrust EV RSA CA 2018/organizationName=DigiCert Inc/countryName=US
+| | Public Key type: rsa
+| | Public Key bits: 2048
+| | Signature Algorithm: sha256WithRSAEncryption
+| | Not valid before: 2018-07-15T00:00:00
+| | Not valid after:  2020-08-13T12:00:00
+| | MD5:   8534 b221 d8a5 5c74 0c7c f75b 2d59 4878
+| |_SHA-1: e699 2497 552c 38f4 3f08 4978 b91e cb18 7447 2820
+| |_ssl-date: 2018-11-10T14:12:54+00:00; +1s from scanner time.
+| 995/tcp  open     ssl/pop3           Dovecot DirectAdmin pop3d
+| |_pop3-capabilities: SASL(PLAIN) CAPA UIDL TOP USER AUTH-RESP-CODE PIPELINING RESP-CODES
+| | ssl-cert: Subject: commonName=www.crossyn.com/organizationName=Crossyn Automotive B.V./stateOrProvinceName=Noord-Brabant/countryName=NL
+| | Subject Alternative Name: DNS:www.crossyn.com, DNS:crossyn.com, DNS:servicedesk.crossyn.com, DNS:sp-portal.crossyn.com, DNS:drivers.crossyn.com, DNS:workshops.crossyn.com
+| | Issuer: commonName=GeoTrust EV RSA CA 2018/organizationName=DigiCert Inc/countryName=US
+| | Public Key type: rsa
+| | Public Key bits: 2048
+| | Signature Algorithm: sha256WithRSAEncryption
+| | Not valid before: 2018-07-15T00:00:00
+| | Not valid after:  2020-08-13T12:00:00
+| | MD5:   8534 b221 d8a5 5c74 0c7c f75b 2d59 4878
+| |_SHA-1: e699 2497 552c 38f4 3f08 4978 b91e cb18 7447 2820
+| |_ssl-date: 2018-11-10T14:12:54+00:00; 0s from scanner time.
+| 1863/tcp filtered msnp
+| 3389/tcp filtered ms-wbt-server
+| 5000/tcp filtered upnp
+| 6881/tcp filtered bittorrent-tracker
+| 7778/tcp filtered interwise
+| 9418/tcp filtered git
+| 1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+| SF-Port53-TCP:V=7.70%I=7%D=11/10%Time=5BE6E75C%P=x86_64-pc-linux-gnu%r(DNS
+| SF:VersionBindReqTCP,48,"\0F\0\x06\x85\0\0\x01\0\x01\0\x01\0\0\x07version\
+| SF:x04bind\0\0\x10\0\x03\xc0\x0c\0\x10\0\x03\0\0\0\0\0\x0e\rNot\x20disclos
+| SF:ed\xc0\x0c\0\x02\0\x03\0\0\0\0\0\x02\xc0\x0c");
+| Device type: general purpose|WAP|router|storage-misc|load balancer
+| Running (JUST GUESSING): Linux 2.6.X (97%), Linksys embedded (93%), Synology embedded (93%), Netgear embedded (92%), Vodafone embedded (91%), F5 Networks embedded (89%), Ubiquiti embedded (89%), F5 Networks TMOS 11.1.X (88%)
+| OS CPE: cpe:/o:linux:linux_kernel:2.6.32 cpe:/h:linksys:befw11s4 cpe:/h:synology:rt1900ac cpe:/o:linux:linux_kernel:2.6 cpe:/h:netgear:readynas_3200 cpe:/h:vodafone:easybox_802 cpe:/o:f5:tmos:11.1
+| Aggressive OS guesses: Linux 2.6.32 (97%), Linksys BEFW11S4 WAP (93%), Synology RT1900ac router (93%), Netgear ReadyNAS 3200 NAS device (Linux 2.6) (92%), Vodafone EasyBox 802 wireless ADSL router (91%), Linux 2.6.11 - 2.6.18 (89%), F5 BIG-IP load balancer (89%), Ubiquiti WAP (Linux 2.6.32) (89%), F5 3600 LTM load balancer (88%), Palo Alto PA-500 firewall (87%)
+| No exact OS matches for host (test conditions non-ideal).
+| Uptime guess: 20.456 days (since Sun Oct 21 05:17:08 2018)
+| Network Distance: 1 hop
+| TCP Sequence Prediction: Difficulty=262 (Good luck!)
+| IP ID Sequence Generation: All zeros
+| Service Info: OS: Unix
+| 
+| TRACEROUTE (using port 80/tcp)
+| HOP RTT     ADDRESS
+| 1   0.36 ms skywalker.atsc.nl (84.244.151.35)
+| 
+| NSE: Script Post-scanning.
+| Initiating NSE at 15:13
+| Completed NSE at 15:13, 0.00s elapsed
+| Initiating NSE at 15:13
+| Completed NSE at 15:13, 0.00s elapsed
+| Read data files from: /usr/bin/../share/nmap
+| OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+| Nmap done: 1 IP address (1 host up) scanned in 38.92 seconds
+|            Raw packets sent: 1067 (50.640KB) | Rcvd: 1030 (41.760KB)
+===================================================================================================
+|
+| Directory check:
+| Skipped because https://www.crossyn.com/uniscan7/ did not return the code 404
+===================================================================================================
+|                                                                                                   
+| File check:
+| Skipped because https://www.crossyn.com/uniscan754/ did not return the code 404
+===================================================================================================
+|
+| Check robots.txt:
+| [+] User-agent: *
+| [+] Disallow: /application/attributes
+| [+] Disallow: /application/authentication
+| [+] Disallow: /application/bootstrap
+| [+] Disallow: /application/config
+| [+] Disallow: /application/controllers
+| [+] Disallow: /application/elements
+| [+] Disallow: /application/helpers
+| [+] Disallow: /application/jobs
+| [+] Disallow: /application/languages
+| [+] Disallow: /application/mail
+| [+] Disallow: /application/models
+| [+] Disallow: /application/page_types
+| [+] Disallow: /application/single_pages
+| [+] Disallow: /application/tools
+| [+] Disallow: /application/views
+|
+| Check sitemap.xml:
+| [+] https://www.crossyn.com/crossyn
+| [+] https://www.crossyn.com/nl
+| [+] https://www.crossyn.com/crossyn/search
+| [+] https://www.crossyn.com/contact
+| [+] https://www.crossyn.com/drivers
+| [+] https://www.crossyn.com/business
+| [+] https://www.crossyn.com/news-info
+| [+] https://www.crossyn.com/footer-pages
+| [+] https://www.crossyn.com/crossyn/new-article
+| [+] https://www.crossyn.com/crossyn/partners
+| [+] https://www.crossyn.com/contact/team
+| [+] https://www.crossyn.com/contact/faq
+| [+] https://www.crossyn.com/contact/careers
+| [+] https://www.crossyn.com/contact/faq/privacy
+| [+] https://www.crossyn.com/contact/faq/connected-car
+| [+] https://www.crossyn.com/contact/faq/devices
+| [+] https://www.crossyn.com/contact/faq/business
+| [+] https://www.crossyn.com/contact/faq/privacy-2
+| [+] https://www.crossyn.com/contact/faq/connected-car-2
+| [+] https://www.crossyn.com/contact/faq/workshops-2
+| [+] https://www.crossyn.com/drivers/register
+| [+] https://www.crossyn.com/business/developers
+| [+] https://www.crossyn.com/news-info/platforms-en-data-big-data-in-the-automotive-industry
+| [+] https://www.crossyn.com/news-info/value-of-data
+| [+] https://www.crossyn.com/news-info/sharing-is-connecting
+| [+] https://www.crossyn.com/news-info/data-science-en-recht
+| [+] https://www.crossyn.com/news-info/connected-cars-security-and-transparency
+| [+] https://www.crossyn.com/news-info/what-about-different-types-of-data
+| [+] https://www.crossyn.com/news-info/predictions-and-maintenance
+| [+] https://www.crossyn.com/news-info/different-types-of-vehicle-data
+| [+] https://www.crossyn.com/news-info/upcoming-gdpr
+| [+] https://www.crossyn.com/news-info/evolution-of-a-driving-behaviour-service
+| [+] https://www.crossyn.com/crossyn-connected-car-solutions
+| [+] https://www.crossyn.com/drivers/register/dev
+| [+] https://www.crossyn.com/drivers/register/staging
+| [+] https://www.crossyn.com/drivers/register/test
+| [+] https://www.crossyn.com/nl/drivers
+| [+] https://www.crossyn.com/nl/drivers/register
+===================================================================================================
+===================================================================================================
+Scan end date: 10-11-2018 15:13:11
+
+
+
+HTML report saved in: report/www.crossyn.com.html

