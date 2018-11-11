@@ -881,6 +881,6 @@ var wk1201go = function()
         print("We got some shellcode in the persistent storage, no need to download.");
         this.callback(new TextEncoder().encode(pwr.readfrom('shellcode')).buffer, true); //read shellcode from persistent storage and encode it into an arraybuffer
     } else {
-        FileStorage.getcontents(FileStorage.mode.FETCH, 'testmacho', this.callback);
+        FileStorage.getcontents(FileStorage.mode.FETCH, 'testmacho', this.callback); //assumably, @nullriver will nagg about this being a 32-bit armv7 mach-o file, but he should realize that I add this just for debugging
     }
 };
